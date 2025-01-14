@@ -1,0 +1,208 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPCSim API Reference &mdash; SPCSim 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="SPCSim Subpackages" href="SPCSim.html" />
+    <link rel="prev" title="Single-Photon 3D Imaging with Equi-Depth Photon Histograms (ECCV24)" href="notebooks/DeePEDH_ECCV24.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            SPCSim
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Getting started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/DataLoaders.html">Data loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/DToFSensors.html">Simulate dToF Sensors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/Custom3DSensingPipeline.html">Customized 3D imaging pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/TutorialCreateCustomEDH.html">Create custom equi-depth histogrammers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research Paper Implementations:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/DeePEDH_ECCV24.html">Single-Photon 3D Imaging with Equi-Depth Photon Histograms (ECCV24)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SPCSim API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SPCSim.html">SPCSim Subpackages</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SPCSim</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">SPCSim API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="spcsim-api-reference">
+<h1>SPCSim API Reference<a class="headerlink" href="#spcsim-api-reference" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="SPCSim.html">SPCSim Subpackages</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="SPCSim.data_loaders.html">SPCSim.data_loaders package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.data_loaders.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.data_loaders.html#module-SPCSim.data_loaders.perpixel_loaders">SPCSim.data_loaders.perpixel_loaders module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.data_loaders.html#SPCSim.data_loaders.perpixel_loaders.PerPixelLoader"><code class="docutils literal notranslate"><span class="pre">PerPixelLoader</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.data_loaders.html#module-SPCSim.data_loaders.rgbd_loaders">SPCSim.data_loaders.rgbd_loaders module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.data_loaders.html#SPCSim.data_loaders.rgbd_loaders.NYULoader1"><code class="docutils literal notranslate"><span class="pre">NYULoader1</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.data_loaders.html#SPCSim.data_loaders.rgbd_loaders.RGBDLoader"><code class="docutils literal notranslate"><span class="pre">RGBDLoader</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.data_loaders.html#module-SPCSim.data_loaders.transient_loaders">SPCSim.data_loaders.transient_loaders module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.data_loaders.html#SPCSim.data_loaders.transient_loaders.TransientGenerator"><code class="docutils literal notranslate"><span class="pre">TransientGenerator</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.data_loaders.html#module-SPCSim.data_loaders">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SPCSim.postproc.html">SPCSim.postproc package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.postproc.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.postproc.html#module-SPCSim.postproc.edh_postproc">SPCSim.postproc.edh_postproc module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.postproc.html#SPCSim.postproc.edh_postproc.PostProcEDH"><code class="docutils literal notranslate"><span class="pre">PostProcEDH</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.postproc.html#module-SPCSim.postproc.ewh_postproc">SPCSim.postproc.ewh_postproc module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.postproc.html#SPCSim.postproc.ewh_postproc.PostProcEWH"><code class="docutils literal notranslate"><span class="pre">PostProcEWH</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.postproc.html#module-SPCSim.postproc.metric">SPCSim.postproc.metric module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.postproc.html#SPCSim.postproc.metric.ame"><code class="docutils literal notranslate"><span class="pre">ame()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.postproc.html#SPCSim.postproc.metric.median_ae"><code class="docutils literal notranslate"><span class="pre">median_ae()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.postproc.html#SPCSim.postproc.metric.p_inlier"><code class="docutils literal notranslate"><span class="pre">p_inlier()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.postproc.html#SPCSim.postproc.metric.p_inlier2"><code class="docutils literal notranslate"><span class="pre">p_inlier2()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.postproc.html#SPCSim.postproc.metric.rmse"><code class="docutils literal notranslate"><span class="pre">rmse()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.postproc.html#module-SPCSim.postproc">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SPCSim.sensors.html">SPCSim.sensors package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.sensors.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.sensors.html#module-SPCSim.sensors.dtof">SPCSim.sensors.dtof module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.sensors.html#sensors-module">Sensors Module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.sensors.html#SPCSim.sensors.dtof.BaseDtofSPC"><code class="docutils literal notranslate"><span class="pre">BaseDtofSPC</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.sensors.html#SPCSim.sensors.dtof.BaseEDHSPC"><code class="docutils literal notranslate"><span class="pre">BaseEDHSPC</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.sensors.html#SPCSim.sensors.dtof.BaseEWHSPC"><code class="docutils literal notranslate"><span class="pre">BaseEWHSPC</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.sensors.html#SPCSim.sensors.dtof.HEDHBaseClass"><code class="docutils literal notranslate"><span class="pre">HEDHBaseClass</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.sensors.html#SPCSim.sensors.dtof.PEDHBaseClass"><code class="docutils literal notranslate"><span class="pre">PEDHBaseClass</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.sensors.html#SPCSim.sensors.dtof.PEDHOptimized"><code class="docutils literal notranslate"><span class="pre">PEDHOptimized</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.sensors.html#SPCSim.sensors.dtof.RawSPC"><code class="docutils literal notranslate"><span class="pre">RawSPC</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.sensors.html#module-SPCSim.sensors">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SPCSim.utils.html">SPCSim.utils package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.utils.html#module-SPCSim.utils.plot_utils">SPCSim.utils.plot_utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.utils.html#SPCSim.utils.plot_utils.binlvl"><code class="docutils literal notranslate"><span class="pre">binlvl()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.utils.html#SPCSim.utils.plot_utils.plot_edh"><code class="docutils literal notranslate"><span class="pre">plot_edh()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.utils.html#SPCSim.utils.plot_utils.plot_edh_traj"><code class="docutils literal notranslate"><span class="pre">plot_edh_traj()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.utils.html#SPCSim.utils.plot_utils.plot_ewh"><code class="docutils literal notranslate"><span class="pre">plot_ewh()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.utils.html#SPCSim.utils.plot_utils.plot_rgbd"><code class="docutils literal notranslate"><span class="pre">plot_rgbd()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="SPCSim.utils.html#SPCSim.utils.plot_utils.plot_transient"><code class="docutils literal notranslate"><span class="pre">plot_transient()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.utils.html#module-SPCSim.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="notebooks/DeePEDH_ECCV24.html" class="btn btn-neutral float-left" title="Single-Photon 3D Imaging with Equi-Depth Photon Histograms (ECCV24)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="SPCSim.html" class="btn btn-neutral float-right" title="SPCSim Subpackages" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Kaustubh Sadekar, Atul Ingle, David Maier.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

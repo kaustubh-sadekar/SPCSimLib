@@ -1,0 +1,274 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPCSim.utils package &mdash; SPCSim 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="SPCSim.sensors package" href="SPCSim.sensors.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            SPCSim
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Getting started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/DataLoaders.html">Data loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/DToFSensors.html">Simulate dToF Sensors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/Custom3DSensingPipeline.html">Customized 3D imaging pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/TutorialCreateCustomEDH.html">Create custom equi-depth histogrammers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research Paper Implementations:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/DeePEDH_ECCV24.html">Single-Photon 3D Imaging with Equi-Depth Photon Histograms (ECCV24)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">SPCSim API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="SPCSim.html">SPCSim Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.data_loaders.html">SPCSim.data_loaders package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.postproc.html">SPCSim.postproc package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.sensors.html">SPCSim.sensors package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">SPCSim.utils package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-SPCSim.utils.plot_utils">SPCSim.utils.plot_utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-SPCSim.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SPCSim</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">SPCSim API Reference</a></li>
+          <li class="breadcrumb-item"><a href="SPCSim.html">SPCSim Subpackages</a></li>
+      <li class="breadcrumb-item active">SPCSim.utils package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/SPCSim.utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="spcsim-utils-package">
+<h1>SPCSim.utils package<a class="headerlink" href="#spcsim-utils-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-SPCSim.utils.plot_utils">
+<span id="spcsim-utils-plot-utils-module"></span><h2>SPCSim.utils.plot_utils module<a class="headerlink" href="#module-SPCSim.utils.plot_utils" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="SPCSim.utils.plot_utils.binlvl">
+<span class="sig-prename descclassname"><span class="pre">SPCSim.utils.plot_utils.</span></span><span class="sig-name descname"><span class="pre">binlvl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edh_len</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/utils/plot_utils.html#binlvl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.utils.plot_utils.binlvl" title="Link to this definition"></a></dt>
+<dd><p>Funciton to calculate and return the binning level for each index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>idx</strong> (<em>int</em>) – EDH bin index</p></li>
+<li><p><strong>edh_len</strong> (<em>int</em>) – Total ED histogram bins</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Boundary level</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bdry_level</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SPCSim.utils.plot_utils.plot_edh">
+<span class="sig-prename descclassname"><span class="pre">SPCSim.utils.plot_utils.</span></span><span class="sig-name descname"><span class="pre">plot_edh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebins_full</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plt_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-g'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ymax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ls</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['r',</span> <span class="pre">'g',</span> <span class="pre">'b',</span> <span class="pre">'y',</span> <span class="pre">'c',</span> <span class="pre">'m']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/utils/plot_utils.html#plot_edh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.utils.plot_utils.plot_edh" title="Link to this definition"></a></dt>
+<dd><p>Function to plot the ED histogram boundaries based on the levels for better understanding.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function supports plotting of bins only till 6th level i.e. till 64 bins</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ebins_full</strong> (<em>np.ndarray</em>) – ED histogram bins with the boundary bins</p></li>
+<li><p><strong>ax</strong> (<em>_type_</em>) – Matplotlib plotting axis</p></li>
+<li><p><strong>tr</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – True transient or EW histogram with bins = ebins_full[-1]. Defaults to None.</p></li>
+<li><p><strong>plt_type</strong> (<em>str</em><em>, </em><em>optional</em>) – Used to change the line plot color and style for tr. Defaults to ‘-g’.</p></li>
+<li><p><strong>crop_window</strong> (<em>int</em><em>, </em><em>optional</em>) – Allows to zoom-in closer to the peak. Defaults to 0.</p></li>
+<li><p><strong>ymax</strong> (<em>float</em><em>, </em><em>optional</em>) – Height of ED histogram bins. Defaults to 0.5.</p></li>
+<li><p><strong>lw</strong> (<em>int</em><em>, </em><em>optional</em>) – Change the line width of ED histogram boundaries. Defaults to 1.</p></li>
+<li><p><strong>ls</strong> (<em>str</em><em>, </em><em>optional</em>) – Change the line style of ED histogram boundaries. Defaults to ‘-‘.</p></li>
+<li><p><strong>colors_list</strong> (<em>list</em><em>, </em><em>optional</em>) – List of color values used for ED boundaries of different levels. Defaults to [‘r’,’g’,’b’,’y’,’c’,’m’].</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SPCSim.utils.plot_utils.plot_edh_traj">
+<span class="sig-prename descclassname"><span class="pre">SPCSim.utils.plot_utils.</span></span><span class="sig-name descname"><span class="pre">plot_edh_traj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edh_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gt_edh_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ewh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/utils/plot_utils.html#plot_edh_traj"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.utils.plot_utils.plot_edh_traj" title="Link to this definition"></a></dt>
+<dd><p>Function to plot the EDH binner trajectories</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<em>_type_</em>) – Matplotlib plotting axis</p></li>
+<li><p><strong>edh_list</strong> (<em>_type_</em>) – List of EDH binner CV values for each laser cycle</p></li>
+<li><p><strong>gt_edh_list</strong> (<em>_type_</em>) – List of true quantiles to be tracked by the EDH binners</p></li>
+<li><p><strong>tr</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – True transient or EW histogram with bins = ebins_full[-1]. Defaults to None.</p></li>
+<li><p><strong>colors</strong> (<em>list</em><em>, </em><em>optional</em>) – List of color values used for ED boundaries of different levels. Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SPCSim.utils.plot_utils.plot_ewh">
+<span class="sig-prename descclassname"><span class="pre">SPCSim.utils.plot_utils.</span></span><span class="sig-name descname"><span class="pre">plot_ewh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xbins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ewh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/utils/plot_utils.html#plot_ewh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.utils.plot_utils.plot_ewh" title="Link to this definition"></a></dt>
+<dd><p>Function to plot EW histograms</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<em>_type_</em>) – Matplotlib plotting axis</p></li>
+<li><p><strong>xbins</strong> (<em>_type_</em>) – EW histogram midpoint locations on time axis.</p></li>
+<li><p><strong>ewh</strong> (<em>_type_</em>) – EW histogram</p></li>
+<li><p><strong>label</strong> (<em>_type_</em><em>, </em><em>optional</em>) – Plot label for EW histogram. Defaults to None.</p></li>
+<li><p><strong>color</strong> (<em>_type_</em><em>, </em><em>optional</em>) – EW histogram edge color. Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SPCSim.utils.plot_utils.plot_rgbd">
+<span class="sig-prename descclassname"><span class="pre">SPCSim.utils.plot_utils.</span></span><span class="sig-name descname"><span class="pre">plot_rgbd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax_rgb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax_dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rgb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gray'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'off'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rgb_title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RGB</span> <span class="pre">image'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_cbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/utils/plot_utils.html#plot_rgbd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.utils.plot_utils.plot_rgbd" title="Link to this definition"></a></dt>
+<dd><p>Function to plot RGB and Distance images</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fig</strong> (<em>_type_</em>) – Matplotlib figure object</p></li>
+<li><p><strong>ax_rgb</strong> (<em>_type_</em>) – Matplotlib subplot axis for RGB image</p></li>
+<li><p><strong>ax_dist</strong> (<em>_type_</em>) – Matplotlib subplot axis for distance image</p></li>
+<li><p><strong>rgb</strong> (<em>_type_</em>) – RGB image</p></li>
+<li><p><strong>dist</strong> (<em>_type_</em>) – Distance image</p></li>
+<li><p><strong>cmap</strong> (<em>str</em><em>, </em><em>optional</em>) – Color map used to display the distance image. Defaults to “gray”.</p></li>
+<li><p><strong>axis_off</strong> (<em>str</em><em>, </em><em>optional</em>) – Remove image axis. Defaults to “off”.</p></li>
+<li><p><strong>rgb_title</strong> (<em>str</em><em>, </em><em>optional</em>) – Title for rgb image. Defaults to “RGB image”.</p></li>
+<li><p><strong>show_cbar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Flag to select displaying color bar. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Matplotlib imshow output object for further use.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>im</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SPCSim.utils.plot_utils.plot_transient">
+<span class="sig-prename descclassname"><span class="pre">SPCSim.utils.plot_utils.</span></span><span class="sig-name descname"><span class="pre">plot_transient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plt_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-g'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'True</span> <span class="pre">transient'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/utils/plot_utils.html#plot_transient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.utils.plot_utils.plot_transient" title="Link to this definition"></a></dt>
+<dd><p>Function to plot the true transients, photon densities and EW histograms with N_ewhbins = N_tbins</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<em>_type_</em>) – Matplotlib plotting axis</p></li>
+<li><p><strong>tr</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) – True transient or EW histogram with bins = ebins_full[-1]. Defaults to None.</p></li>
+<li><p><strong>plt_type</strong> (<em>str</em><em>, </em><em>optional</em>) – Used to change the line plot color and style for tr. Defaults to ‘-g’.</p></li>
+<li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – Plot label for tr. Defaults to “True transient”.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-SPCSim.utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-SPCSim.utils" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="SPCSim.sensors.html" class="btn btn-neutral float-left" title="SPCSim.sensors package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Kaustubh Sadekar, Atul Ingle, David Maier.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

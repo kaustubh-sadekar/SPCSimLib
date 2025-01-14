@@ -1,0 +1,561 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPCSim.sensors package &mdash; SPCSim 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="SPCSim.utils package" href="SPCSim.utils.html" />
+    <link rel="prev" title="SPCSim.postproc package" href="SPCSim.postproc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            SPCSim
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Getting started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/DataLoaders.html">Data loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/DToFSensors.html">Simulate dToF Sensors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/Custom3DSensingPipeline.html">Customized 3D imaging pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/TutorialCreateCustomEDH.html">Create custom equi-depth histogrammers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research Paper Implementations:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/DeePEDH_ECCV24.html">Single-Photon 3D Imaging with Equi-Depth Photon Histograms (ECCV24)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">SPCSim API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="SPCSim.html">SPCSim Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.data_loaders.html">SPCSim.data_loaders package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.postproc.html">SPCSim.postproc package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">SPCSim.sensors package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-SPCSim.sensors.dtof">SPCSim.sensors.dtof module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-SPCSim.sensors">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.utils.html">SPCSim.utils package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SPCSim</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">SPCSim API Reference</a></li>
+          <li class="breadcrumb-item"><a href="SPCSim.html">SPCSim Subpackages</a></li>
+      <li class="breadcrumb-item active">SPCSim.sensors package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/SPCSim.sensors.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="spcsim-sensors-package">
+<h1>SPCSim.sensors package<a class="headerlink" href="#spcsim-sensors-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-SPCSim.sensors.dtof">
+<span id="spcsim-sensors-dtof-module"></span><h2>SPCSim.sensors.dtof module<a class="headerlink" href="#module-SPCSim.sensors.dtof" title="Link to this heading"></a></h2>
+<section id="sensors-module">
+<h3>Sensors Module<a class="headerlink" href="#sensors-module" title="Link to this heading"></a></h3>
+</section>
+<dl class="py class">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.BaseDtofSPC">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SPCSim.sensors.dtof.</span></span><span class="sig-name descname"><span class="pre">BaseDtofSPC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Nr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_pulses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_tbins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#BaseDtofSPC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.BaseDtofSPC" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for direct time-of-flight single-photon cameras.</p>
+<p>The capture method needs to be written for each of the inheriting classes.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.BaseDtofSPC.capture">
+<span class="sig-name descname"><span class="pre">capture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi_bar</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#BaseDtofSPC.capture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.BaseDtofSPC.capture" title="Link to this definition"></a></dt>
+<dd><p>Method needs to be implemented for inheriting class</p>
+<p>Ensure the output to be a dictionary for future compatibility. Check inheriting classes for examples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>phi_bar</strong> (<em>torch.tensor</em>) – Average incident photon flux tensor of shape (Nr, Nc, N_tbins)</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>NotImplementedError</strong> – This is a base class method which needs to be implemented for each inheriting class.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.BaseDtofSPC.sim_poisson_process">
+<span class="sig-name descname"><span class="pre">sim_poisson_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi_bar</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#BaseDtofSPC.sim_poisson_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.BaseDtofSPC.sim_poisson_process" title="Link to this definition"></a></dt>
+<dd><p>Method to simulate detected photons from average incident photon flux.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The sim_poisson_process method of BaseDtofSPC takes input as phi_bar (the probability of detecting photons in each bin) and
+applies the following operation <code class="docutils literal notranslate"><span class="pre">hist</span> <span class="pre">=</span> <span class="pre">torch.poisson(phi_bar).to(device</span> <span class="pre">=</span> <span class="pre">self.device,</span> <span class="pre">dtype</span> <span class="pre">=</span> <span class="pre">torch.bool)*1</span></code>. It is important to note that
+once the per bin probability of detecting a photon increases above 1 or 1.3, almost all bins detect a photon hence the output vector <cite>hist</cite> is
+always a vector of all ones. Hence increasing the total photon flux above 1.3 photons per bin results in the same values of <cite>hist</cite> no mater how
+high the flux is. This is important to note when performing experiments for high-photon flux scenarios.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.BaseEDHSPC">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SPCSim.sensors.dtof.</span></span><span class="sig-name descname"><span class="pre">BaseEDHSPC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Nr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_pulses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_tbins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_edhbins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#BaseEDHSPC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.BaseEDHSPC" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SPCSim.sensors.dtof.BaseDtofSPC" title="SPCSim.sensors.dtof.BaseDtofSPC"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDtofSPC</span></code></a></p>
+<p>This SPC class simulates photon measurements and captures them in form of equi-depth (ED) histograms.</p>
+<p>Unlike EWHSPCs the EDHSPCs divide the laser time period such that the (depth) total counts per bin is equal hence ED histogram bins
+are mostly unequal in width.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The term <cite>depth</cite> in equi-depth histograms refers to the count/height of the bin indicating that ED histogram bins have equal height. The term
+<cite>depth</cite> is not supposed to be confused with the scene depth. Hence in the code <cite>distance</cite> is used instead of <cite>depth</cite> to indicate how far objects are in the scene.</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.BaseEDHSPC.add_extreme_boundaries">
+<span class="sig-name descname"><span class="pre">add_extreme_boundaries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#BaseEDHSPC.add_extreme_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.BaseEDHSPC.add_extreme_boundaries" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.BaseEDHSPC.capture">
+<span class="sig-name descname"><span class="pre">capture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi_bar</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#BaseEDHSPC.capture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.BaseEDHSPC.capture" title="Link to this definition"></a></dt>
+<dd><p>Method to generate SPC data for average incident photon flux (phi_bar) for
+given number of laser cycles and other SPC intrinsic parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>phi_bar</strong> (<em>torch.tensor</em>) – Average incident photon flux tensor of shape (Nr, Nc, N_tbins)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary containing ED histogram for detected photons and
+the average incident photons flux and corresponding EW histogram tensor</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>captured_data (dictionary)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.BaseEDHSPC.ewh2edh">
+<span class="sig-name descname"><span class="pre">ewh2edh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ewh_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#BaseEDHSPC.ewh2edh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.BaseEDHSPC.ewh2edh" title="Link to this definition"></a></dt>
+<dd><p>Method to compute equi-depth histogram from equi-width histogram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ewh_data</strong> (<em>torch.tensor</em>) – Equi-width histogram tensor of shape (Nr, Nc, N_tbins)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Oracle equi-depth histogram tensor of shape (Nr, Nc, N_tbins)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>edh_bins (torch.tensor)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.BaseEDHSPC.get_ts_from_hist">
+<span class="sig-name descname"><span class="pre">get_ts_from_hist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hist</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#BaseEDHSPC.get_ts_from_hist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.BaseEDHSPC.get_ts_from_hist" title="Link to this definition"></a></dt>
+<dd><p>Method to convert one-hot encoded photon detection vectors to photon time stamp vectors</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hist</strong> (<em>torch.tensor</em>) – Input one-hot encoded photon detection cube where hist[n,m,k] = 1 if a photon is detected in the</p></li>
+<li><p><strong>column</strong> (<em>kth time bin for pixel in the nth row and mth</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Time stamp tensor of the same size as hist. ts[n,m,k] = k if hist[n,m,k] = 1 else =0
+hist (torch.tensor): Input one-hot encoded photon detection cube.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ts (torch.tensor)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.BaseEWHSPC">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SPCSim.sensors.dtof.</span></span><span class="sig-name descname"><span class="pre">BaseEWHSPC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Nr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_pulses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_tbins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_ewhbins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#BaseEWHSPC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.BaseEWHSPC" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SPCSim.sensors.dtof.BaseDtofSPC" title="SPCSim.sensors.dtof.BaseDtofSPC"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDtofSPC</span></code></a></p>
+<p>This SPC class simulates photon measurements and captures them in form of equi-width (EW) histograms.</p>
+<p>EW histograms divide the laser time period into bins of equal widths and store the count of photon timestamps
+incident in respective bin. In idea scenarios the bin with highest counts is most likely to contain the signal peak.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.BaseEWHSPC.capture">
+<span class="sig-name descname"><span class="pre">capture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi_bar</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#BaseEWHSPC.capture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.BaseEWHSPC.capture" title="Link to this definition"></a></dt>
+<dd><p>Method to generate SPC data for average incident photon flux (phi_bar) for
+given number of laser cycles and other SPC intrinsic parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>phi_bar</strong> (<em>torch.tensor</em>) – Average incident photon flux tensor of shape (Nr, Nc, N_tbins)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary containing EW histogram tensor</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>captured_data (dictionary)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.HEDHBaseClass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SPCSim.sensors.dtof.</span></span><span class="sig-name descname"><span class="pre">HEDHBaseClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Nr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_pulses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_tbins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_edhbins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_traj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#HEDHBaseClass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.HEDHBaseClass" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SPCSim.sensors.dtof.BaseEDHSPC" title="SPCSim.sensors.dtof.BaseEDHSPC"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEDHSPC</span></code></a></p>
+<p>Base class for hierarchical EDH</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.HEDHBaseClass.apply_edh_step">
+<span class="sig-name descname"><span class="pre">apply_edh_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#HEDHBaseClass.apply_edh_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.HEDHBaseClass.apply_edh_step" title="Link to this definition"></a></dt>
+<dd><p>Method to apply the computed step size to update the control values of respective binners.</p>
+<p>For the HEDHSPCs it also ensures that the child boundaries do not cross over the parent boundaries.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.HEDHBaseClass.capture">
+<span class="sig-name descname"><span class="pre">capture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi_bar</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#HEDHBaseClass.capture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.HEDHBaseClass.capture" title="Link to this definition"></a></dt>
+<dd><p>Method to generate SPC data for average incident photon flux (phi_bar) for
+given number of laser cycles and other SPC intrinsic parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>phi_bar</strong> (<em>torch.tensor</em>) – Average incident photon flux tensor of shape (Nr, Nc, N_tbins)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary containing ED histogram for detected photons, the oracle and ground truth ED histograms, corresponding EW histogram tensor and
+list of binner control values tracked by binner at each laser cycle for a pixel at <code class="docutils literal notranslate"><span class="pre">(self.pix_r,</span> <span class="pre">self.pix_c)</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>captured_data (dictionary)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.HEDHBaseClass.init_edh_params">
+<span class="sig-name descname"><span class="pre">init_edh_params</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#HEDHBaseClass.init_edh_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.HEDHBaseClass.init_edh_params" title="Link to this definition"></a></dt>
+<dd><p>This method is called in the constructor and ensures initializing all the necessary common tensors that will be updated later.
+Initializing the tensors in the constructor eliminates the need to construct them at each laser cycle hence reduces simulation time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.HEDHBaseClass.reset_edh">
+<span class="sig-name descname"><span class="pre">reset_edh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#HEDHBaseClass.reset_edh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.HEDHBaseClass.reset_edh" title="Link to this definition"></a></dt>
+<dd><p>This method is called once in the constructor to decide the initialization scheme of the binners at the first laser cycle.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Valid-mask based initialization for binners at later stages is handled by <code class="xref py py-func docutils literal notranslate"><span class="pre">update_delta_mask()</span></code></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.HEDHBaseClass.set_decay_schedule">
+<span class="sig-name descname"><span class="pre">set_decay_schedule</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#HEDHBaseClass.set_decay_schedule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.HEDHBaseClass.set_decay_schedule" title="Link to this definition"></a></dt>
+<dd><p>Method to set the stepping schedule for the binners.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">`decay_schedule`</span></code> contains a list of decay values for each laser cycle. Hence its length is equal to the number of laser cycles.
+A simple example of could be to overwrite this method with the following definition</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">set_decay_schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="bp">self</span><span class="o">.</span><span class="n">decay_schedule</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N_pulses</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.HEDHBaseClass.set_idx_lists">
+<span class="sig-name descname"><span class="pre">set_idx_lists</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#HEDHBaseClass.set_idx_lists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.HEDHBaseClass.set_idx_lists" title="Link to this definition"></a></dt>
+<dd><p>Method to set the binner indices for further operations.
+Reference image for 16-bin EDH</p>
+<img alt="_images/SPCSim_bins.png" src="_images/SPCSim_bins.png" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For 16-bin HEDH, we track 15 boundaries and two extra boundaries on index 0 and -1 are the extreme boundaries.
+Since we do not perform any updates to the boundaries we do not pass the extreme boundaries for any edh update step.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.HEDHBaseClass.update_delta">
+<span class="sig-name descname"><span class="pre">update_delta</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#HEDHBaseClass.update_delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.HEDHBaseClass.update_delta" title="Link to this definition"></a></dt>
+<dd><p>Method to update the difference between early photons (<code class="docutils literal notranslate"><span class="pre">pe</span></code>) and late photons (<code class="docutils literal notranslate"><span class="pre">pl</span></code>). The <cite>delta</cite> value is used to compute the binner update step.</p>
+<p>For a basic binner, the sign of delta is used to compute the binner update step as <code class="docutils literal notranslate"><span class="pre">step[k+1]</span> <span class="pre">=</span> <span class="pre">sign(delta[k])</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.HEDHBaseClass.update_delta_mask">
+<span class="sig-name descname"><span class="pre">update_delta_mask</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#HEDHBaseClass.update_delta_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.HEDHBaseClass.update_delta_mask" title="Link to this definition"></a></dt>
+<dd><p>Method to apply custom temporal masks to activate or deactivate
+specific binners.</p>
+<p>Example to ensure all boundaries are activated for all the laser cycles</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">update_delta_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="bp">self</span><span class="o">.</span><span class="n">delta_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_mask</span><span class="o">*</span><span class="mi">0</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.HEDHBaseClass.update_edh">
+<span class="sig-name descname"><span class="pre">update_edh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hist</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#HEDHBaseClass.update_edh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.HEDHBaseClass.update_edh" title="Link to this definition"></a></dt>
+<dd><p>Method to compute and apply the update step to the binners</p>
+<p>This method obtains the decay value for the specific cycle (cy_cnt), updates the delta_mask to choose valid binners to update at (cy_cnt),
+generates timestamp vectors from photon detection vectors, uses the timestamp vectors to compute before and after photons for each binner,
+compute the delta (late photons - early photons)/total photons, computer the update step for each binner and apply the update step to corresponding binners.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.HEDHBaseClass.update_pa_pb_kp">
+<span class="sig-name descname"><span class="pre">update_pa_pb_kp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ts</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#HEDHBaseClass.update_pa_pb_kp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.HEDHBaseClass.update_pa_pb_kp" title="Link to this definition"></a></dt>
+<dd><p>Method to compute the early and late photon streams for current control value of each binner in a vectorized form.</p>
+<p>Refer the following figure from [1] to understand how the binner hardware splits the photon stream into early and late photons.</p>
+<img alt="https://static.wixstatic.com/media/bcd6ad_c4fbe0e7d57b47beafac0b091f502e97~mv2.png/v1/fill/w_600,h_491,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/bcd6ad_c4fbe0e7d57b47beafac0b091f502e97~mv2.png" src="https://static.wixstatic.com/media/bcd6ad_c4fbe0e7d57b47beafac0b091f502e97~mv2.png/v1/fill/w_600,h_491,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/bcd6ad_c4fbe0e7d57b47beafac0b091f502e97~mv2.png" />
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hist</strong> (<em>torch.tensor</em>) – Input one-hot encoded photon detection cube.</p></li>
+<li><p><strong>ts</strong> (<em>torch.tensor</em>) – Time stamp tensor of the same size as hist. ts[n,m,k] = k if hist[n,m,k] = 1 else =0</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.PEDHBaseClass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SPCSim.sensors.dtof.</span></span><span class="sig-name descname"><span class="pre">PEDHBaseClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Nr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_pulses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_tbins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_edhbins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_traj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#PEDHBaseClass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.PEDHBaseClass" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SPCSim.sensors.dtof.BaseEDHSPC" title="SPCSim.sensors.dtof.BaseEDHSPC"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEDHSPC</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.PEDHBaseClass.apply_edh_step">
+<span class="sig-name descname"><span class="pre">apply_edh_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#PEDHBaseClass.apply_edh_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.PEDHBaseClass.apply_edh_step" title="Link to this definition"></a></dt>
+<dd><p>Method to apply the computed step size to update the control values of respective binners.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.PEDHBaseClass.capture">
+<span class="sig-name descname"><span class="pre">capture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi_bar</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#PEDHBaseClass.capture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.PEDHBaseClass.capture" title="Link to this definition"></a></dt>
+<dd><p>Method to generate SPC data for average incident photon flux (phi_bar) for
+given number of laser cycles and other SPC intrinsic parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>phi_bar</strong> (<em>torch.tensor</em>) – Average incident photon flux tensor of shape (Nr, Nc, N_tbins)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary containing ED histogram for detected photons, the oracle and ground truth ED histograms, corresponding EW histogram tensor and
+list of binner control values tracked by binner at each laser cycle for a pixel at <code class="docutils literal notranslate"><span class="pre">(self.pix_r,</span> <span class="pre">self.pix_c)</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>captured_data (dictionary)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.PEDHBaseClass.init_edh_params">
+<span class="sig-name descname"><span class="pre">init_edh_params</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#PEDHBaseClass.init_edh_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.PEDHBaseClass.init_edh_params" title="Link to this definition"></a></dt>
+<dd><p>This method is called in the constructor and ensures initializing all the necessary common tensors that will be updated later.
+Initializing the tensors in the constructor eliminates the need to construct them at each laser cycle hence reduces simulation time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.PEDHBaseClass.reset_edh">
+<span class="sig-name descname"><span class="pre">reset_edh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#PEDHBaseClass.reset_edh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.PEDHBaseClass.reset_edh" title="Link to this definition"></a></dt>
+<dd><p>This method is called once in the constructor to decide the initialization scheme of the binners at the first laser cycle.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.PEDHBaseClass.set_decay_schedule">
+<span class="sig-name descname"><span class="pre">set_decay_schedule</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#PEDHBaseClass.set_decay_schedule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.PEDHBaseClass.set_decay_schedule" title="Link to this definition"></a></dt>
+<dd><p>Method to set the stepping schedule for the binners.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">`decay_schedule`</span></code> contains a list of decay values for each laser cycle. Hence its length is equal to the number of laser cycles.
+A simple example of could be to overwrite this method with the following definition</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">set_decay_schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="bp">self</span><span class="o">.</span><span class="n">decay_schedule</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N_pulses</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.PEDHBaseClass.update_delta">
+<span class="sig-name descname"><span class="pre">update_delta</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#PEDHBaseClass.update_delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.PEDHBaseClass.update_delta" title="Link to this definition"></a></dt>
+<dd><p>Method to update the difference between early photons (<code class="docutils literal notranslate"><span class="pre">pe</span></code>) and late photons (<code class="docutils literal notranslate"><span class="pre">pl</span></code>).
+The <cite>delta</cite> value is used to compute the binner update step. For proportional binners early and
+late photons are multiplied by respective quantile fractions for proportional stepping explained in
+[2].</p>
+<p>For a basic proportional binner delta is used to compute the binner update step as <code class="docutils literal notranslate"><span class="pre">step[n+1]</span> <span class="pre">=</span> <span class="pre">delta[n]</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.PEDHBaseClass.update_edh">
+<span class="sig-name descname"><span class="pre">update_edh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hist</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#PEDHBaseClass.update_edh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.PEDHBaseClass.update_edh" title="Link to this definition"></a></dt>
+<dd><p>Method to compute and apply the update step to the binners</p>
+<p>This method obtains the decay value for the specific cycle (cy_cnt), updates the delta_mask to choose valid binners to update at (cy_cnt),
+generates timestamp vectors from photon detection vectors, uses the timestamp vectors to compute before and after photons for each binner,
+compute the delta (late photons - early photons)/total photons, computer the update step for each binner and apply the update step to corresponding binners.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.PEDHBaseClass.update_pa_pb_kp">
+<span class="sig-name descname"><span class="pre">update_pa_pb_kp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ts</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#PEDHBaseClass.update_pa_pb_kp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.PEDHBaseClass.update_pa_pb_kp" title="Link to this definition"></a></dt>
+<dd><p>Method to compute the early and late photon streams for current control value of each binner in a vectorized form.</p>
+<p>Refer HEDHBaseClass for more details about early and late photons</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hist</strong> (<em>torch.tensor</em>) – Input one-hot encoded photon detection cube.</p></li>
+<li><p><strong>ts</strong> (<em>torch.tensor</em>) – Time stamp tensor of the same size as hist. ts[n,m,k] = k if hist[n,m,k] = 1 else =0</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.PEDHOptimized">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SPCSim.sensors.dtof.</span></span><span class="sig-name descname"><span class="pre">PEDHOptimized</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Nr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_pulses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_tbins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_edhbins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_traj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pix_c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#PEDHOptimized"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.PEDHOptimized" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SPCSim.sensors.dtof.PEDHBaseClass" title="SPCSim.sensors.dtof.PEDHBaseClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">PEDHBaseClass</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.PEDHOptimized.set_decay_schedule">
+<span class="sig-name descname"><span class="pre">set_decay_schedule</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#PEDHOptimized.set_decay_schedule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.PEDHOptimized.set_decay_schedule" title="Link to this definition"></a></dt>
+<dd><p>Method to generate improved decay schedule based on the optimized stepping strategy [2].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.PEDHOptimized.update_edh">
+<span class="sig-name descname"><span class="pre">update_edh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hist</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#PEDHOptimized.update_edh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.PEDHOptimized.update_edh" title="Link to this definition"></a></dt>
+<dd><p>Update method applying temporal decay and temporal smoothing and scaling based on
+optimized stepping strategy for PEDH.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.RawSPC">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SPCSim.sensors.dtof.</span></span><span class="sig-name descname"><span class="pre">RawSPC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Nr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_pulses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_tbins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_output_ts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#RawSPC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.RawSPC" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SPCSim.sensors.dtof.BaseDtofSPC" title="SPCSim.sensors.dtof.BaseDtofSPC"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDtofSPC</span></code></a></p>
+<p>This SPC class simulates N_output_ts photon time stamp measurements for NrxNc pixels.</p>
+<p>Either use the class with PerPixelLoader to simulate phi_bar data or pass transient
+from a dataset and capture all the timestamps for N_pulses laser cycles.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For this class if the average signal+bkg photons per laser cycle exceed 1 then there is a high change that
+the we will run out of the <cite>N_output_ts</cite> timestamps even before we scan all the histogram bins.</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.sensors.dtof.RawSPC.capture">
+<span class="sig-name descname"><span class="pre">capture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi_bar</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#RawSPC.capture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.RawSPC.capture" title="Link to this definition"></a></dt>
+<dd><p>Method to generate SPC data for average incident photon flux (phi_bar) for
+given number of laser cycles and other SPC intrinsic parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>phi_bar</strong> (<em>torch.tensor</em>) – Average incident photon flux tensor of shape (Nr, Nc, N_tbins)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Dictionary containing raw photon timestamps (<code class="docutils literal notranslate"><span class="pre">time_stamps</span></code>)</dt><dd><p>and corresponding EW histogram (<code class="docutils literal notranslate"><span class="pre">ewh</span></code>) tensor</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>captured_data (dictionary)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-SPCSim.sensors">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-SPCSim.sensors" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="SPCSim.postproc.html" class="btn btn-neutral float-left" title="SPCSim.postproc package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="SPCSim.utils.html" class="btn btn-neutral float-right" title="SPCSim.utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Kaustubh Sadekar, Atul Ingle, David Maier.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

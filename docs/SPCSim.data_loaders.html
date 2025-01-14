@@ -1,0 +1,379 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPCSim.data_loaders package &mdash; SPCSim 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="SPCSim.postproc package" href="SPCSim.postproc.html" />
+    <link rel="prev" title="SPCSim Subpackages" href="SPCSim.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            SPCSim
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Getting started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/DataLoaders.html">Data loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/DToFSensors.html">Simulate dToF Sensors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/Custom3DSensingPipeline.html">Customized 3D imaging pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/TutorialCreateCustomEDH.html">Create custom equi-depth histogrammers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research Paper Implementations:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/DeePEDH_ECCV24.html">Single-Photon 3D Imaging with Equi-Depth Photon Histograms (ECCV24)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">SPCSim API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="SPCSim.html">SPCSim Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">SPCSim.data_loaders package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-SPCSim.data_loaders.perpixel_loaders">SPCSim.data_loaders.perpixel_loaders module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-SPCSim.data_loaders.rgbd_loaders">SPCSim.data_loaders.rgbd_loaders module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-SPCSim.data_loaders.transient_loaders">SPCSim.data_loaders.transient_loaders module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-SPCSim.data_loaders">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.postproc.html">SPCSim.postproc package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.sensors.html">SPCSim.sensors package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.utils.html">SPCSim.utils package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SPCSim</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">SPCSim API Reference</a></li>
+          <li class="breadcrumb-item"><a href="SPCSim.html">SPCSim Subpackages</a></li>
+      <li class="breadcrumb-item active">SPCSim.data_loaders package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/SPCSim.data_loaders.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="spcsim-data-loaders-package">
+<h1>SPCSim.data_loaders package<a class="headerlink" href="#spcsim-data-loaders-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-SPCSim.data_loaders.perpixel_loaders">
+<span id="spcsim-data-loaders-perpixel-loaders-module"></span><h2>SPCSim.data_loaders.perpixel_loaders module<a class="headerlink" href="#module-SPCSim.data_loaders.perpixel_loaders" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SPCSim.data_loaders.perpixel_loaders.PerPixelLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SPCSim.data_loaders.perpixel_loaders.</span></span><span class="sig-name descname"><span class="pre">PerPixelLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_dists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_bkg_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[[1,</span> <span class="pre">1]]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_runs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/data_loaders/perpixel_loaders.html#PerPixelLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.data_loaders.perpixel_loaders.PerPixelLoader" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class loads a custom RGB-D image with each row consisting of different
+distance values and avg signal-background photons and R columns where R is the
+number of runs to be captured for each pixel with a specific SBR and distance
+combination.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If A is the output transient matrix then A[i,j] gives readings for
+<code class="docutils literal notranslate"><span class="pre">dist_idx</span> <span class="pre">=</span> <span class="pre">i</span> <span class="pre">%</span> <span class="pre">len(SBR_list)</span></code>, <code class="docutils literal notranslate"><span class="pre">SBR_Pair_idx</span> <span class="pre">=</span> <span class="pre">(i/num_dists)</span></code>, and <code class="docutils literal notranslate"><span class="pre">Run_idx</span> <span class="pre">=</span> <span class="pre">j</span></code>.</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.data_loaders.perpixel_loaders.PerPixelLoader.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/data_loaders/perpixel_loaders.html#PerPixelLoader.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.data_loaders.perpixel_loaders.PerPixelLoader.get_data" title="Link to this definition"></a></dt>
+<dd><p>Method to generate the rgb-d data along with the average signal and background photon flux per cycle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary containing the generated RGB, distance image, albedo, signal and bkg flux</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>data (dictionary)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.data_loaders.perpixel_loaders.PerPixelLoader.get_row">
+<span class="sig-name descname"><span class="pre">get_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sbr_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/data_loaders/perpixel_loaders.html#PerPixelLoader.get_row"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.data_loaders.perpixel_loaders.PerPixelLoader.get_row" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-SPCSim.data_loaders.rgbd_loaders">
+<span id="spcsim-data-loaders-rgbd-loaders-module"></span><h2>SPCSim.data_loaders.rgbd_loaders module<a class="headerlink" href="#module-SPCSim.data_loaders.rgbd_loaders" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SPCSim.data_loaders.rgbd_loaders.NYULoader1">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SPCSim.data_loaders.rgbd_loaders.</span></span><span class="sig-name descname"><span class="pre">NYULoader1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Nr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop_r1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">44</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop_r2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">470</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop_c1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop_c2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_tbins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'train'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/data_loaders/rgbd_loaders.html#NYULoader1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.data_loaders.rgbd_loaders.NYULoader1" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#SPCSim.data_loaders.rgbd_loaders.RGBDLoader" title="SPCSim.data_loaders.rgbd_loaders.RGBDLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">RGBDLoader</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.data_loaders.rgbd_loaders.NYULoader1.dist_preproc">
+<span class="sig-name descname"><span class="pre">dist_preproc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dist</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/data_loaders/rgbd_loaders.html#NYULoader1.dist_preproc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.data_loaders.rgbd_loaders.NYULoader1.dist_preproc" title="Link to this definition"></a></dt>
+<dd><p>Method to preprocess the distance image</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="SPCSim.data_loaders.rgbd_loaders.RGBDLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SPCSim.data_loaders.rgbd_loaders.</span></span><span class="sig-name descname"><span class="pre">RGBDLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Nr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop_r1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop_r2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop_c1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop_c2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_tbins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'train'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/data_loaders/rgbd_loaders.html#RGBDLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.data_loaders.rgbd_loaders.RGBDLoader" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>General class to load RGB-D datasets</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.data_loaders.rgbd_loaders.RGBDLoader.albedo_preproc">
+<span class="sig-name descname"><span class="pre">albedo_preproc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">albedo</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/data_loaders/rgbd_loaders.html#RGBDLoader.albedo_preproc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.data_loaders.rgbd_loaders.RGBDLoader.albedo_preproc" title="Link to this definition"></a></dt>
+<dd><p>Method to preprocess the albedo image</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.data_loaders.rgbd_loaders.RGBDLoader.dist_preproc">
+<span class="sig-name descname"><span class="pre">dist_preproc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dist</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/data_loaders/rgbd_loaders.html#RGBDLoader.dist_preproc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.data_loaders.rgbd_loaders.RGBDLoader.dist_preproc" title="Link to this definition"></a></dt>
+<dd><p>Method to preprocess the distance image</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.data_loaders.rgbd_loaders.RGBDLoader.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rgb_pth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist_pth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">albedo_pth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intensity_pth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/data_loaders/rgbd_loaders.html#RGBDLoader.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.data_loaders.rgbd_loaders.RGBDLoader.get_data" title="Link to this definition"></a></dt>
+<dd><p>Method to get the RGB-D data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rgb_pth</strong> (<em>str</em>) – File path to rgb image</p></li>
+<li><p><strong>dist_pth</strong> (<em>str</em>) – File path to distance image</p></li>
+<li><p><strong>albedo_pth</strong> (<em>str</em><em>, </em><em>optional</em>) – _description_. Defaults to “”.</p></li>
+<li><p><strong>intensity_pth</strong> (<em>str</em><em>, </em><em>optional</em>) – _description_. Defaults to “”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary containing the rgb, intensity, albedo and distance image</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>data (dictionary)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.data_loaders.rgbd_loaders.RGBDLoader.intensity_preproc">
+<span class="sig-name descname"><span class="pre">intensity_preproc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">intensity</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/data_loaders/rgbd_loaders.html#RGBDLoader.intensity_preproc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.data_loaders.rgbd_loaders.RGBDLoader.intensity_preproc" title="Link to this definition"></a></dt>
+<dd><p>Method to preprocess the intensity image</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.data_loaders.rgbd_loaders.RGBDLoader.load_albedo">
+<span class="sig-name descname"><span class="pre">load_albedo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">albedo_pth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/data_loaders/rgbd_loaders.html#RGBDLoader.load_albedo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.data_loaders.rgbd_loaders.RGBDLoader.load_albedo" title="Link to this definition"></a></dt>
+<dd><p>Method to load the albedo image</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.data_loaders.rgbd_loaders.RGBDLoader.load_dist">
+<span class="sig-name descname"><span class="pre">load_dist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dist_pth</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/data_loaders/rgbd_loaders.html#RGBDLoader.load_dist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.data_loaders.rgbd_loaders.RGBDLoader.load_dist" title="Link to this definition"></a></dt>
+<dd><p>Method to load the distance image</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.data_loaders.rgbd_loaders.RGBDLoader.load_intensity">
+<span class="sig-name descname"><span class="pre">load_intensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">intensity_pth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">read_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/data_loaders/rgbd_loaders.html#RGBDLoader.load_intensity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.data_loaders.rgbd_loaders.RGBDLoader.load_intensity" title="Link to this definition"></a></dt>
+<dd><p>Method to load the intensity image</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.data_loaders.rgbd_loaders.RGBDLoader.load_rgb">
+<span class="sig-name descname"><span class="pre">load_rgb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rgb_pth</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/data_loaders/rgbd_loaders.html#RGBDLoader.load_rgb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.data_loaders.rgbd_loaders.RGBDLoader.load_rgb" title="Link to this definition"></a></dt>
+<dd><p>Method to load the rgb image</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The color channels are flipped as cv2.imread reads bgr image instead of rgb</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.data_loaders.rgbd_loaders.RGBDLoader.rgb_preproc">
+<span class="sig-name descname"><span class="pre">rgb_preproc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rgb</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/data_loaders/rgbd_loaders.html#RGBDLoader.rgb_preproc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.data_loaders.rgbd_loaders.RGBDLoader.rgb_preproc" title="Link to this definition"></a></dt>
+<dd><p>Method to preprocess the rgb image</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-SPCSim.data_loaders.transient_loaders">
+<span id="spcsim-data-loaders-transient-loaders-module"></span><h2>SPCSim.data_loaders.transient_loaders module<a class="headerlink" href="#module-SPCSim.data_loaders.transient_loaders" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SPCSim.data_loaders.transient_loaders.TransientGenerator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SPCSim.data_loaders.transient_loaders.</span></span><span class="sig-name descname"><span class="pre">TransientGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Nr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_tbins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FWHM</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/data_loaders/transient_loaders.html#TransientGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.data_loaders.transient_loaders.TransientGenerator" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.data_loaders.transient_loaders.TransientGenerator.get_shifted_laser_pulse_mesh">
+<span class="sig-name descname"><span class="pre">get_shifted_laser_pulse_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gt_dist</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/data_loaders/transient_loaders.html#TransientGenerator.get_shifted_laser_pulse_mesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.data_loaders.transient_loaders.TransientGenerator.get_shifted_laser_pulse_mesh" title="Link to this definition"></a></dt>
+<dd><p>Method to compute the time shifted gaussian pulse based on the true distance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>gt_dist</strong> (<em>torch.tensor</em>) – Scene ground truth distance image of dimension (Nr, Nc)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of time shifted laser pulse for each pixel based on the true distance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tr (torch.tensor)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.data_loaders.transient_loaders.TransientGenerator.get_signal_attenuation">
+<span class="sig-name descname"><span class="pre">get_signal_attenuation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">albedo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/data_loaders/transient_loaders.html#TransientGenerator.get_signal_attenuation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.data_loaders.transient_loaders.TransientGenerator.get_signal_attenuation" title="Link to this definition"></a></dt>
+<dd><p>Method to calculate attenuation factor from albedo information and dist information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>albedo</strong> (<em>torch.tensor</em>) – Scene albedo image of dimension (Nr, Nc)</p></li>
+<li><p><strong>dist</strong> (<em>torch.tensor</em>) – Scene ground truth distance image of dimension (Nr, Nc)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Attenuated signal</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>signal_attn (torch.tensor)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.data_loaders.transient_loaders.TransientGenerator.get_transient">
+<span class="sig-name descname"><span class="pre">get_transient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gt_dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">albedo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intensity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_sig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_bkg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/data_loaders/transient_loaders.html#TransientGenerator.get_transient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.data_loaders.transient_loaders.TransientGenerator.get_transient" title="Link to this definition"></a></dt>
+<dd><p>Method to add noise and attenuation to ideal transient</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gt_dist</strong> (<em>torch.tensor</em>) – Scene ground truth distance image of dimension (Nr, Nc)</p></li>
+<li><p><strong>albedo</strong> (<em>torch.tensor</em>) – Scene albedo image of dimension (Nr, Nc)</p></li>
+<li><p><strong>intensity</strong> (<em>torch.tensor</em>) – Scene intensity image of dimension (Nr, Nc)</p></li>
+<li><p><strong>alpha_sig</strong> (<em>float</em>) – Average signal photons per laser cycle</p></li>
+<li><p><strong>alpha_bkg</strong> (<em>float</em>) – Average background photons per laser cycle (not per bin)</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Signal attenuation only depends on scene albedo and background flux depends on
+the total scene intensity.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Time shifted attenuated laser pulse representing the photon density incident on the SPAD camera.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>r_t1 (torch.tensor)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.data_loaders.transient_loaders.TransientGenerator.gt_shift_idx">
+<span class="sig-name descname"><span class="pre">gt_shift_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gt_dist</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/data_loaders/transient_loaders.html#TransientGenerator.gt_shift_idx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.data_loaders.transient_loaders.TransientGenerator.gt_shift_idx" title="Link to this definition"></a></dt>
+<dd><p>Method to compute the peak location in bins unit for given scene distance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>gt_dist</strong> (<em>torch.tensor</em>) – Scene ground truth distance image of dimension (Nr, Nc)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor consisting of integer values corresponding to the peak location.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>shift_idx (torch.tensor)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-SPCSim.data_loaders">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-SPCSim.data_loaders" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="SPCSim.html" class="btn btn-neutral float-left" title="SPCSim Subpackages" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="SPCSim.postproc.html" class="btn btn-neutral float-right" title="SPCSim.postproc package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Kaustubh Sadekar, Atul Ingle, David Maier.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

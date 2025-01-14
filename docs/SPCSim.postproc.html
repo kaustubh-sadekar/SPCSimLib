@@ -1,0 +1,242 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPCSim.postproc package &mdash; SPCSim 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="SPCSim.sensors package" href="SPCSim.sensors.html" />
+    <link rel="prev" title="SPCSim.data_loaders package" href="SPCSim.data_loaders.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            SPCSim
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Getting started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/DataLoaders.html">Data loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/DToFSensors.html">Simulate dToF Sensors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/Custom3DSensingPipeline.html">Customized 3D imaging pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/TutorialCreateCustomEDH.html">Create custom equi-depth histogrammers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research Paper Implementations:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/DeePEDH_ECCV24.html">Single-Photon 3D Imaging with Equi-Depth Photon Histograms (ECCV24)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">SPCSim API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="SPCSim.html">SPCSim Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.data_loaders.html">SPCSim.data_loaders package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">SPCSim.postproc package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-SPCSim.postproc.edh_postproc">SPCSim.postproc.edh_postproc module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-SPCSim.postproc.ewh_postproc">SPCSim.postproc.ewh_postproc module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-SPCSim.postproc.metric">SPCSim.postproc.metric module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-SPCSim.postproc">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.sensors.html">SPCSim.sensors package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SPCSim.utils.html">SPCSim.utils package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SPCSim</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">SPCSim API Reference</a></li>
+          <li class="breadcrumb-item"><a href="SPCSim.html">SPCSim Subpackages</a></li>
+      <li class="breadcrumb-item active">SPCSim.postproc package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/SPCSim.postproc.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="spcsim-postproc-package">
+<h1>SPCSim.postproc package<a class="headerlink" href="#spcsim-postproc-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-SPCSim.postproc.edh_postproc">
+<span id="spcsim-postproc-edh-postproc-module"></span><h2>SPCSim.postproc.edh_postproc module<a class="headerlink" href="#module-SPCSim.postproc.edh_postproc" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SPCSim.postproc.edh_postproc.PostProcEDH">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SPCSim.postproc.edh_postproc.</span></span><span class="sig-name descname"><span class="pre">PostProcEDH</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Nr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_tbins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/postproc/edh_postproc.html#PostProcEDH"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.postproc.edh_postproc.PostProcEDH" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for post processing the EDH data for distance estimation.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.postproc.edh_postproc.PostProcEDH.edh2depth_t">
+<span class="sig-name descname"><span class="pre">edh2depth_t</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eqbins_t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/postproc/edh_postproc.html#PostProcEDH.edh2depth_t"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.postproc.edh_postproc.PostProcEDH.edh2depth_t" title="Link to this definition"></a></dt>
+<dd><p>This is the latest depth estimation method that includes three different depth estimation methods.</p>
+<p>mode = 0: Rho_0 distance estimation after resampling to <code class="docutils literal notranslate"><span class="pre">N_tbins</span></code> number of equally spaced EDH values obtained using nearest neighbor interpolation.
+mode = 1: Rho_1 distance estimation after resampling to <code class="docutils literal notranslate"><span class="pre">N_tbins</span></code> number of equally spaced EDH values obtained using  linear interpolation.
+mode = 2: Naive distance estimation using narrowest bin of the EDH without any interpolation</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.postproc.edh_postproc.PostProcEDH.interp_nonuni_t">
+<span class="sig-name descname"><span class="pre">interp_nonuni_t</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/postproc/edh_postproc.html#PostProcEDH.interp_nonuni_t"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.postproc.edh_postproc.PostProcEDH.interp_nonuni_t" title="Link to this definition"></a></dt>
+<dd><p>This function takes the x and y data values as 3D tensors and interpolates the y values along <code class="docutils literal notranslate"><span class="pre">N</span></code> equally spaced x values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x1</strong> (<em>torch.tensor</em>) – Location of the mid-points of ED histogram bins. Tensor shape (Nr, Nc, &lt;Num EDH bins&gt;)</p></li>
+<li><p><strong>y1</strong> (<em>torch.tensor</em>) – Photon density estimate for each ED histogram bins (Inverse values of the ED histogram bin widths). Tensor shape (Nr, Nc, &lt;Num EDH bins&gt;)</p></li>
+<li><p><strong>N</strong> (<em>int</em>) – Number of equally spaced time bins to interpolate the photon density estimates</p></li>
+<li><p><strong>mode</strong> (<em>int</em><em>, </em><em>optional</em>) – Choose mode=0 for NN interpolation and mode = 1 for linear interpolation. Defaults to 1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Location of the equally spaced interpolated mid-points of ED histogram bins. Tensor shape (Nr, Nc, N)
+y2 (torch.tensor): Value of the the interpolated photon density estimates of ED histogram bins. Tensor shape (Nr, Nc, N)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>x2 (torch.tensor)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-SPCSim.postproc.ewh_postproc">
+<span id="spcsim-postproc-ewh-postproc-module"></span><h2>SPCSim.postproc.ewh_postproc module<a class="headerlink" href="#module-SPCSim.postproc.ewh_postproc" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SPCSim.postproc.ewh_postproc.PostProcEWH">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">SPCSim.postproc.ewh_postproc.</span></span><span class="sig-name descname"><span class="pre">PostProcEWH</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Nr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Nc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_tbins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/postproc/ewh_postproc.html#PostProcEWH"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.postproc.ewh_postproc.PostProcEWH" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for post processing the EWH data for distance estimation.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="SPCSim.postproc.ewh_postproc.PostProcEWH.ewh2depth_t">
+<span class="sig-name descname"><span class="pre">ewh2depth_t</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ewh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/postproc/ewh_postproc.html#PostProcEWH.ewh2depth_t"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.postproc.ewh_postproc.PostProcEWH.ewh2depth_t" title="Link to this definition"></a></dt>
+<dd><p>Method to compute distance from equi-width histograms</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-SPCSim.postproc.metric">
+<span id="spcsim-postproc-metric-module"></span><h2>SPCSim.postproc.metric module<a class="headerlink" href="#module-SPCSim.postproc.metric" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="SPCSim.postproc.metric.ame">
+<span class="sig-prename descclassname"><span class="pre">SPCSim.postproc.metric.</span></span><span class="sig-name descname"><span class="pre">ame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/postproc/metric.html#ame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.postproc.metric.ame" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SPCSim.postproc.metric.median_ae">
+<span class="sig-prename descclassname"><span class="pre">SPCSim.postproc.metric.</span></span><span class="sig-name descname"><span class="pre">median_ae</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/postproc/metric.html#median_ae"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.postproc.metric.median_ae" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SPCSim.postproc.metric.p_inlier">
+<span class="sig-prename descclassname"><span class="pre">SPCSim.postproc.metric.</span></span><span class="sig-name descname"><span class="pre">p_inlier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/postproc/metric.html#p_inlier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.postproc.metric.p_inlier" title="Link to this definition"></a></dt>
+<dd><p>alpha is in % of gt
+NOTE: It is in % so in the code we multiply 0.01 to the final value</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SPCSim.postproc.metric.p_inlier2">
+<span class="sig-prename descclassname"><span class="pre">SPCSim.postproc.metric.</span></span><span class="sig-name descname"><span class="pre">p_inlier2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/postproc/metric.html#p_inlier2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.postproc.metric.p_inlier2" title="Link to this definition"></a></dt>
+<dd><p>alpha is in mm</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SPCSim.postproc.metric.rmse">
+<span class="sig-prename descclassname"><span class="pre">SPCSim.postproc.metric.</span></span><span class="sig-name descname"><span class="pre">rmse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/postproc/metric.html#rmse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.postproc.metric.rmse" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-SPCSim.postproc">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-SPCSim.postproc" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="SPCSim.data_loaders.html" class="btn btn-neutral float-left" title="SPCSim.data_loaders package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="SPCSim.sensors.html" class="btn btn-neutral float-right" title="SPCSim.sensors package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Kaustubh Sadekar, Atul Ingle, David Maier.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
