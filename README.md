@@ -8,6 +8,7 @@ SPCSim (Single-Photon Camera Simulator) is a PyTorch-based library for simulatin
 The current version of SPCSim includes implementations of 3D SPCs used in direct time of flight (dToF) applications. 
 SPCSim enables users to design customized 3D imaging pipelines and simulate SPC measurements for different scene distances and illumination conditions.
 
+### [Documentation Link](https://kaustubh-sadekar.github.io/SPCSimLib/)
 
 ## Key features of SPCSim
 
