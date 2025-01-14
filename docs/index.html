@@ -141,7 +141,9 @@ SPCSim enables users to design customized 3D imaging pipelines and simulate SPC 
 <ol class="arabic simple">
 <li><p>Create a new virtual environment and install the required libraries</p></li>
 </ol>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;spcsim_env&quot;</span><span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.9.12
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/kaustubh-sadekar/SPCSimLib.git
+<span class="nb">cd</span><span class="w"> </span>SPCSimLib/
+conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;spcsim_env&quot;</span><span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.9.12
 conda<span class="w"> </span>activate<span class="w"> </span>spcsim_env
 pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
 </pre></div>
