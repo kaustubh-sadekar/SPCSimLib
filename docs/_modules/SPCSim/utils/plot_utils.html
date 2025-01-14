@@ -1,0 +1,365 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPCSim.utils.plot_utils &mdash; SPCSim 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            SPCSim
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Getting started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/DataLoaders.html">Data loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/DToFSensors.html">Simulate dToF Sensors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Custom3DSensingPipeline.html">Customized 3D imaging pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/TutorialCreateCustomEDH.html">Create custom equi-depth histogrammers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research Paper Implementations:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/DeePEDH_ECCV24.html">Single-Photon 3D Imaging with Equi-Depth Photon Histograms (ECCV24)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">SPCSim API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">SPCSim</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">SPCSim.utils.plot_utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for SPCSim.utils.plot_utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mpl_toolkits.axes_grid1</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_axes_locatable</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+
+<div class="viewcode-block" id="binlvl">
+<a class="viewcode-back" href="../../../SPCSim.utils.html#SPCSim.utils.plot_utils.binlvl">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">binlvl</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span><span class="n">edh_len</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Funciton to calculate and return the binning level for each index.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        idx (int): EDH bin index</span>
+<span class="sd">        edh_len (int): Total ED histogram bins</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bdry_level: Boundary level</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">bdry_level</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">edh_len</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">gcd</span><span class="p">(</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">edh_len</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="mi">2</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>
+    
+    <span class="k">return</span> <span class="n">bdry_level</span></div>
+
+
+
+<div class="viewcode-block" id="plot_edh">
+<a class="viewcode-back" href="../../../SPCSim.utils.html#SPCSim.utils.plot_utils.plot_edh">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_edh</span><span class="p">(</span><span class="n">ebins_full</span><span class="p">,</span> <span class="n">ax_</span><span class="p">,</span> <span class="n">tr</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">plt_type</span> <span class="o">=</span> <span class="s1">&#39;-g&#39;</span><span class="p">,</span> <span class="n">crop_window</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">colors_list</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="s1">&#39;m&#39;</span><span class="p">]):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Function to plot the ED histogram boundaries based on the levels for better understanding.</span>
+
+<span class="sd">    .. note:: This function supports plotting of bins only till 6th level i.e. till 64 bins</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ebins_full (np.ndarray): ED histogram bins with the boundary bins</span>
+<span class="sd">        ax_ (_type_): Matplotlib plotting axis</span>
+<span class="sd">        tr (np.ndarray, optional): True transient or EW histogram with bins = ebins_full[-1]. Defaults to None.</span>
+<span class="sd">        plt_type (str, optional): Used to change the line plot color and style for tr. Defaults to &#39;-g&#39;.</span>
+<span class="sd">        crop_window (int, optional): Allows to zoom-in closer to the peak. Defaults to 0.</span>
+<span class="sd">        ymax (float, optional): Height of ED histogram bins. Defaults to 0.5.</span>
+<span class="sd">        lw (int, optional): Change the line width of ED histogram boundaries. Defaults to 1.</span>
+<span class="sd">        ls (str, optional): Change the line style of ED histogram boundaries. Defaults to &#39;-&#39;.</span>
+<span class="sd">        colors_list (list, optional): List of color values used for ED boundaries of different levels. Defaults to [&#39;r&#39;,&#39;g&#39;,&#39;b&#39;,&#39;y&#39;,&#39;c&#39;,&#39;m&#39;].</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors_list</span><span class="p">):</span>
+        <span class="n">prop_cycle</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.prop_cycle&#39;</span><span class="p">]</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="n">prop_cycle</span><span class="o">.</span><span class="n">by_key</span><span class="p">()[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="n">colors_list</span>
+    
+    <span class="n">ebins</span> <span class="o">=</span> <span class="n">ebins_full</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span><span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ebins</span><span class="p">):</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">binlvl</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">ebins</span><span class="p">))]</span>
+        <span class="n">ax_</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">e</span><span class="p">,</span>
+                    <span class="n">ymax</span><span class="o">=</span><span class="n">ymax</span><span class="p">,</span>
+                    <span class="n">ymin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">color</span> <span class="o">=</span> <span class="n">c</span><span class="p">,</span>
+                    <span class="n">linewidth</span> <span class="o">=</span> <span class="n">lw</span><span class="p">,</span>
+                    <span class="n">linestyle</span><span class="o">=</span><span class="n">ls</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">ls</span><span class="o">==</span><span class="s1">&#39;-&#39;</span><span class="p">:</span>
+    
+        <span class="n">ax_</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">ebins_full</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">ymax</span><span class="o">=</span><span class="n">ymax</span><span class="p">,</span>
+                    <span class="n">ymin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span>
+                    <span class="n">linewidth</span> <span class="o">=</span> <span class="n">lw</span><span class="p">,</span>
+                    <span class="n">linestyle</span><span class="o">=</span><span class="n">ls</span><span class="p">)</span>
+        
+        <span class="n">ax_</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">ebins_full</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="n">ymax</span><span class="o">=</span><span class="n">ymax</span><span class="p">,</span>
+                    <span class="n">ymin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span>
+                    <span class="n">linewidth</span> <span class="o">=</span> <span class="n">lw</span><span class="p">,</span>
+                    <span class="n">linestyle</span><span class="o">=</span><span class="n">ls</span><span class="p">)</span>
+        
+        <span class="n">ax_</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="n">ymax</span><span class="p">,</span>
+                    <span class="n">xmax</span><span class="o">=</span><span class="n">ebins_full</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="n">xmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span>
+                    <span class="n">linewidth</span> <span class="o">=</span> <span class="n">lw</span><span class="p">,</span>
+                    <span class="n">linestyle</span><span class="o">=</span><span class="n">ls</span><span class="p">)</span>
+        
+        <span class="n">ax_</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                    <span class="n">xmax</span><span class="o">=</span><span class="n">ebins_full</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="n">xmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span>
+                    <span class="n">linewidth</span> <span class="o">=</span> <span class="n">lw</span><span class="p">,</span>
+                    <span class="n">linestyle</span><span class="o">=</span><span class="n">ls</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">tr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">),</span> <span class="s2">&quot;Ensure transient is a numpy array before passing to plot_transient function&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;Ensure transient is a 1D array&quot;</span>
+
+        <span class="n">plot_transient</span><span class="p">(</span><span class="n">ax_</span><span class="p">,</span> <span class="n">tr</span><span class="p">,</span> <span class="n">plt_type</span><span class="o">=</span><span class="n">plt_type</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">crop_window</span><span class="p">:</span>
+            <span class="n">ax_</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span><span class="o">-</span><span class="n">crop_window</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span><span class="o">+</span><span class="n">crop_window</span><span class="p">)</span>
+    
+    <span class="n">ax_</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (a.u.)&quot;</span><span class="p">)</span>
+    <span class="n">ax_</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Photon counts per bin&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="plot_transient">
+<a class="viewcode-back" href="../../../SPCSim.utils.html#SPCSim.utils.plot_utils.plot_transient">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_transient</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">tr</span><span class="p">,</span> <span class="n">plt_type</span> <span class="o">=</span> <span class="s1">&#39;-g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True transient&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Function to plot the true transients, photon densities and EW histograms with N_ewhbins = N_tbins </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ax_ (_type_): Matplotlib plotting axis</span>
+<span class="sd">        tr (np.ndarray, optional): True transient or EW histogram with bins = ebins_full[-1]. Defaults to None.</span>
+<span class="sd">        plt_type (str, optional): Used to change the line plot color and style for tr. Defaults to &#39;-g&#39;.</span>
+<span class="sd">        label (str, optional): Plot label for tr. Defaults to &quot;True transient&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">),</span> <span class="s2">&quot;Ensure transient is a numpy array before passing to plot_transient function&quot;</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;Ensure transient is a 1D array&quot;</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">plt_type</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">label</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="plot_rgbd">
+<a class="viewcode-back" href="../../../SPCSim.utils.html#SPCSim.utils.plot_utils.plot_rgbd">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_rgbd</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ax_rgb</span><span class="p">,</span> <span class="n">ax_dist</span><span class="p">,</span> <span class="n">rgb</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;off&quot;</span><span class="p">,</span> <span class="n">rgb_title</span> <span class="o">=</span> <span class="s2">&quot;RGB image&quot;</span><span class="p">,</span> <span class="n">show_cbar</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Function to plot RGB and Distance images</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        fig (_type_): Matplotlib figure object</span>
+<span class="sd">        ax_rgb (_type_): Matplotlib subplot axis for RGB image</span>
+<span class="sd">        ax_dist (_type_): Matplotlib subplot axis for distance image</span>
+<span class="sd">        rgb (_type_): RGB image</span>
+<span class="sd">        dist (_type_): Distance image</span>
+<span class="sd">        cmap (str, optional): Color map used to display the distance image. Defaults to &quot;gray&quot;.</span>
+<span class="sd">        axis_off (str, optional): Remove image axis. Defaults to &quot;off&quot;.</span>
+<span class="sd">        rgb_title (str, optional): Title for rgb image. Defaults to &quot;RGB image&quot;.</span>
+<span class="sd">        show_cbar (bool, optional): Flag to select displaying color bar. Defaults to False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        im: Matplotlib imshow output object for further use.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+  
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rgb</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">),</span> <span class="s2">&quot;Ensure rgb is a numpy array before passing to plot_transient function&quot;</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">),</span> <span class="s2">&quot;Ensure dist is a numpy array before passing to plot_transient function&quot;</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dist</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">),</span> <span class="s2">&quot;Ensure transient is a 1D array&quot;</span>
+
+    <span class="n">ax_rgb</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">rgb</span><span class="p">)</span>
+    <span class="n">ax_rgb</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+    <span class="n">ax_rgb</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">rgb_title</span><span class="p">)</span>
+
+    <span class="n">im</span> <span class="o">=</span> <span class="n">ax_dist</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">)</span>
+    <span class="n">ax_dist</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+    <span class="n">ax_dist</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Distance map&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># displaying colorbar</span>
+    <span class="k">if</span> <span class="n">show_cbar</span><span class="p">:</span>
+      <span class="n">divider</span> <span class="o">=</span> <span class="n">make_axes_locatable</span><span class="p">(</span><span class="n">ax_dist</span><span class="p">)</span>
+      <span class="n">cax</span> <span class="o">=</span> <span class="n">divider</span><span class="o">.</span><span class="n">append_axes</span><span class="p">(</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;5%&#39;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+      <span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;vertical&#39;</span><span class="p">)</span>
+
+      <span class="n">cbar</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+      <span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;Distance (m)&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">270</span><span class="p">,</span> <span class="n">labelpad</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">im</span></div>
+
+
+<div class="viewcode-block" id="plot_ewh">
+<a class="viewcode-back" href="../../../SPCSim.utils.html#SPCSim.utils.plot_utils.plot_ewh">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_ewh</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">xbins</span><span class="p">,</span> <span class="n">ewh</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Function to plot EW histograms</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ax_ (_type_): Matplotlib plotting axis</span>
+<span class="sd">        xbins (_type_): EW histogram midpoint locations on time axis.</span>
+<span class="sd">        ewh (_type_): EW histogram</span>
+<span class="sd">        label (_type_, optional): Plot label for EW histogram. Defaults to None.</span>
+<span class="sd">        color (_type_, optional): EW histogram edge color. Defaults to None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">color</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="n">bar_c</span> <span class="o">=</span> <span class="s1">&#39;b&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">bar_c</span> <span class="o">=</span> <span class="n">color</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ewh</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">),</span> <span class="s2">&quot;Ensure ewh is a numpy array before passing to plot_transient function&quot;</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ewh</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;Ensure ewh is a 1D array&quot;</span>
+
+    <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+      <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">xbins</span><span class="p">,</span> <span class="n">ewh</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">label</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="p">(</span><span class="n">xbins</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">xbins</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;edge&quot;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">bar_c</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">xbins</span><span class="p">,</span> <span class="n">ewh</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="p">(</span><span class="n">xbins</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">xbins</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;edge&quot;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">bar_c</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span></div>
+
+
+
+    
+<div class="viewcode-block" id="plot_edh_traj">
+<a class="viewcode-back" href="../../../SPCSim.utils.html#SPCSim.utils.plot_utils.plot_edh_traj">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_edh_traj</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">edh_list</span><span class="p">,</span> <span class="n">gt_edh_list</span><span class="p">,</span> <span class="n">tr</span><span class="p">,</span> <span class="n">ewh</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">colors</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Function to plot the EDH binner trajectories</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ax_ (_type_): Matplotlib plotting axis</span>
+<span class="sd">        edh_list (_type_): List of EDH binner CV values for each laser cycle</span>
+<span class="sd">        gt_edh_list (_type_): List of true quantiles to be tracked by the EDH binners</span>
+<span class="sd">        tr (np.ndarray, optional): True transient or EW histogram with bins = ebins_full[-1]. Defaults to None.</span>
+<span class="sd">        colors (list, optional): List of color values used for ED boundaries of different levels. Defaults to None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="n">edh_list</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">gt_edh_list</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">edh_list</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">gt_edh_list</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">colors</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="s1">&#39;m&#39;</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">gt_edh_list</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">binlvl</span><span class="p">(</span><span class="n">i</span><span class="p">,(</span><span class="n">gt_edh_list</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))]</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="n">gt_edh_list</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">xmax</span><span class="o">=</span><span class="n">edh_list</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">xmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">color</span> <span class="o">=</span> <span class="n">c</span><span class="p">,</span>
+                <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">edh_list</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span><span class="s1">&#39;-&#39;</span><span class="o">+</span><span class="n">c</span><span class="p">)</span>
+    
+    <span class="n">tr_bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">tr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">tr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span><span class="n">tr_bins</span><span class="p">,</span> <span class="s1">&#39;-g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True Transient&quot;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">ewh</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ewh</span><span class="p">,</span><span class="n">tr_bins</span><span class="p">,</span> <span class="s1">&#39;-b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;EWH&quot;</span><span class="p">)</span>
+    
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Laser cycles&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;CV trajectories&quot;</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Kaustubh Sadekar, Atul Ingle, David Maier.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

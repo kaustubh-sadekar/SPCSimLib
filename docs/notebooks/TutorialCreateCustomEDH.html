@@ -1,0 +1,724 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create custom equi-depth histogrammers &mdash; SPCSim 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Single-Photon 3D Imaging with Equi-Depth Photon Histograms (ECCV24)" href="DeePEDH_ECCV24.html" />
+    <link rel="prev" title="Customized 3D imaging pipeline" href="Custom3DSensingPipeline.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SPCSim
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Getting started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="DataLoaders.html">Data loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DToFSensors.html">Simulate dToF Sensors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Tutorials:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Custom3DSensingPipeline.html">Customized 3D imaging pipeline</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Create custom equi-depth histogrammers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#BaseEDHSPC-class-methods">BaseEDHSPC class methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#HEDHBaseClass-methods-and-attributes">HEDHBaseClass methods and attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Creating-a-custom-HEDH-variant1">Creating a custom HEDH variant1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Creating-a-custom-HEDH-variant2">Creating a custom HEDH variant2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Creating-a-custom-PEDH-variant1">Creating a custom PEDH variant1</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research Paper Implementations:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="DeePEDH_ECCV24.html">Single-Photon 3D Imaging with Equi-Depth Photon Histograms (ECCV24)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">SPCSim API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SPCSim</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Create custom equi-depth histogrammers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/notebooks/TutorialCreateCustomEDH.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Create-custom-equi-depth-histogrammers">
+<h1>Create custom equi-depth histogrammers<a class="headerlink" href="#Create-custom-equi-depth-histogrammers" title="Link to this heading"></a></h1>
+<p>SPCSim provides 4t EDH implementations <code class="docutils literal notranslate"><span class="pre">BaseEDHSPC</span></code>, <code class="docutils literal notranslate"><span class="pre">HEDHBaseClass</span></code>, <code class="docutils literal notranslate"><span class="pre">PEDHBaseClass</span></code> and <code class="docutils literal notranslate"><span class="pre">PEDHOptimized</span></code>. The HEDHBaseClass and PEDHBaseClass inherit BaseEDHSPC class and PEDHOptimized inherits PEDHBaseClass.</p>
+<p>The BaseEDHSPC returns the ground truth EDH <code class="docutils literal notranslate"><span class="pre">gtedh</span></code> and Oracle EDH <code class="docutils literal notranslate"><span class="pre">oedh</span></code>. gtedh is the ED histogram for the known/simulated true transient and oedh is the ED histogram computed after storing all the photon timestamps captured by the SPC hence the term ‘oracle’.</p>
+<p>To create a variant of HEDH or PEDH, inheriting the respective base classes is a good start. HEDH and PEDH have some fundamental differences in their operation which justifice the design choice of creating two differen base classes.</p>
+<p>The EDH class methods modularize the task of creating new variants of EDH. Some of the methods and their functionalities are as follows:</p>
+<section id="BaseEDHSPC-class-methods">
+<h2>BaseEDHSPC class methods<a class="headerlink" href="#BaseEDHSPC-class-methods" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">get_ts_from_hist</span></code> : Use this method to convert the one-hot encoded photon detection vectors to photon time-stamps which can later be used to compute the early and late photons.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">capture</span></code> : The capture method is inherited from the <code class="docutils literal notranslate"><span class="pre">BaseDtofSPC</span></code> class and needs to be overwritten when creating a fundamentally new EDH. For example <code class="docutils literal notranslate"><span class="pre">HEDHBaseClass</span></code>, <code class="docutils literal notranslate"><span class="pre">PEDHBaseClass</span></code> overwrite different implementations of the capture method but the <code class="docutils literal notranslate"><span class="pre">PEDHOptimized</span></code> class inherits the capture method of <code class="docutils literal notranslate"><span class="pre">PEDHBaseClass</span></code> instead of overwriting it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ewh2edh</span></code>: This method is used to compute the ED histogram from a captured EW histogram.</p></li>
+</ul>
+</section>
+<section id="HEDHBaseClass-methods-and-attributes">
+<h2>HEDHBaseClass methods and attributes<a class="headerlink" href="#HEDHBaseClass-methods-and-attributes" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">set_idx_lists</span></code>: Method to initialize indxing lists.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">clip_left</span></code> and <code class="docutils literal notranslate"><span class="pre">clip_right</span></code>: These lists are useful to compute the early and late photon streams following the hierachical flow.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">set_decay_schedule</span></code> is called in the class constructor and is used to create different decay schedules to reduce the overall step size over time hence reducing the standard deviation in CV values over time.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">update_edh</span></code>: Main method that determines how the CV values of EDH binners are updated. Any variant o f update_edh will have similar outline:</p>
+<ul>
+<li><p>Call <code class="docutils literal notranslate"><span class="pre">update_delta_mask</span></code> to enable or disable updates to the CV value of different binner. For a pixel in i^th row and j^th column setting delta_mask[i,j,k] = 0 will disable any updates to the k^th binboundary.</p></li>
+<li><p>Get the timestamp vector using <code class="docutils literal notranslate"><span class="pre">get_ts_from_hist</span></code>.</p></li>
+<li><p>Compute the early and late photons using <code class="docutils literal notranslate"><span class="pre">update_pa_pb_kp</span></code>.</p></li>
+<li><p>Compute <code class="docutils literal notranslate"><span class="pre">delta</span></code>, the ratio of difference between in early and late photons to the total photons using <code class="docutils literal notranslate"><span class="pre">update_delta</span></code>.</p></li>
+<li><p>Depending on the stepping strategy you can use the value of <code class="docutils literal notranslate"><span class="pre">delta</span></code> to compute the final step size for all the binners and save it in attribute <code class="docutils literal notranslate"><span class="pre">prev_step</span></code>.</p></li>
+<li><p>Finally use <code class="docutils literal notranslate"><span class="pre">apply_edh_step</span></code> and increment the laser cycle counter <code class="docutils literal notranslate"><span class="pre">cy_cnt</span></code> by one and return the updated EDH boundary values stored in <code class="docutils literal notranslate"><span class="pre">e1</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+<p>Most methods are common for <code class="docutils literal notranslate"><span class="pre">HEDHBaseClass</span></code> and <code class="docutils literal notranslate"><span class="pre">PEDHBaseClass</span></code> but with some difference in the implementation based on the inherent nature of how they work.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">SPCSim</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">.</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Creating-a-custom-HEDH-variant1">
+<h2>Creating a custom HEDH variant1<a class="headerlink" href="#Creating-a-custom-HEDH-variant1" title="Link to this heading"></a></h2>
+<p><strong>Setting up the experiment</strong></p>
+<p>Setting the distance = 0.1 of maximum distance, laser pulse width FWHM = 2ns. Creating PerPixelLoader and TransientGenerator objects to simulate true transient for specific scene distance and signal-background photon flux.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">SPCSim.data_loaders.perpixel_loaders</span><span class="w"> </span><span class="kn">import</span> <span class="n">PerPixelLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">SPCSim.data_loaders.transient_loaders</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransientGenerator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">SPCSim.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_transient</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">SPCSim.sensors.dtof</span><span class="w"> </span><span class="kn">import</span> <span class="n">HEDHBaseClass</span><span class="p">,</span> <span class="n">PEDHBaseClass</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">SPCSim.utils.plot_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_transient</span><span class="p">,</span> <span class="n">plot_edh</span><span class="p">,</span> <span class="n">plot_edh_traj</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">SPCSim.postproc.edh_postproc</span><span class="w"> </span><span class="kn">import</span> <span class="n">PostProcEDH</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">min_dist</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">FWHM</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">N_edhbins</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">N_pulses</span> <span class="o">=</span> <span class="mi">2000</span>
+
+
+<span class="c1"># Simulating results for distance = 0.1*dmax</span>
+<span class="n">PixLdr</span> <span class="o">=</span> <span class="n">PerPixelLoader</span><span class="p">(</span><span class="n">min_dist</span> <span class="o">=</span> <span class="n">min_dist</span><span class="p">,</span>
+                        <span class="n">tmax</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+                        <span class="n">sig_bkg_list</span> <span class="o">=</span> <span class="p">[</span>
+                            <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">]],</span>
+                        <span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+
+<span class="c1"># Generate the per pixel data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+
+
+<span class="c1"># Creating transient generator with laser time period of 100ns, FWHM 1 and with</span>
+<span class="c1"># laser time period divided into 1000 equal time-bins</span>
+<span class="n">tr_gen</span> <span class="o">=</span> <span class="n">TransientGenerator</span><span class="p">(</span><span class="n">N_tbins</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">tmax</span> <span class="o">=</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">tmax</span><span class="p">,</span> <span class="n">FWHM</span> <span class="o">=</span> <span class="n">FWHM</span><span class="p">)</span>
+
+
+<span class="c1"># Using the get function to generate the transient</span>
+<span class="c1"># for a given distance, albedo, intensity, and illumination condition</span>
+<span class="n">phi_bar</span> <span class="o">=</span> <span class="n">tr_gen</span><span class="o">.</span><span class="n">get_transient</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;gt_dist&quot;</span><span class="p">],</span>
+                              <span class="n">data</span><span class="p">[</span><span class="s2">&quot;albedo&quot;</span><span class="p">],</span>
+                              <span class="n">data</span><span class="p">[</span><span class="s2">&quot;albedo&quot;</span><span class="p">],</span>
+                              <span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_sig&quot;</span><span class="p">],</span>
+                              <span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_bkg&quot;</span><span class="p">])</span>
+
+
+<span class="c1"># Setting the dimensions, device, number of EWH bins per pixel</span>
+<span class="c1"># and number of laser pulses</span>
+
+<span class="n">Nr</span><span class="p">,</span> <span class="n">Nc</span><span class="p">,</span> <span class="n">N_tbins</span> <span class="o">=</span> <span class="n">phi_bar</span><span class="o">.</span><span class="n">shape</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">device</span>
+<br/></pre></div>
+</div>
+</div>
+<p><strong>Implementing HEDH variant 1</strong></p>
+<p>First example is a simple variant of HEDH where each binner updates the step size by 1 and all levels run for the complete exposure time.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="c1"># Crearting the HEDH variant class</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">HEDHVariant1</span><span class="p">(</span><span class="n">HEDHBaseClass</span><span class="p">):</span>
+  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">Nr</span><span class="p">,</span>
+               <span class="n">Nc</span><span class="p">,</span>
+               <span class="n">N_pulses</span><span class="p">,</span>
+               <span class="n">device</span><span class="p">,</span>
+               <span class="n">N_tbins</span><span class="p">,</span>
+               <span class="n">N_edhbins</span><span class="p">,</span>
+               <span class="n">dead_time</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+               <span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+               <span class="n">save_traj</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+               <span class="n">pix_r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+               <span class="n">pix_c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+               <span class="n">step_params</span> <span class="o">=</span> <span class="p">{}):</span>
+    <span class="n">HEDHBaseClass</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+              <span class="bp">self</span><span class="p">,</span>
+              <span class="n">Nr</span><span class="p">,</span>
+              <span class="n">Nc</span><span class="p">,</span>
+              <span class="n">N_pulses</span><span class="p">,</span>
+              <span class="n">device</span><span class="p">,</span>
+              <span class="n">N_tbins</span><span class="p">,</span>
+              <span class="n">N_edhbins</span><span class="p">,</span>
+              <span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span><span class="p">,</span>
+              <span class="n">save_traj</span> <span class="o">=</span> <span class="n">save_traj</span><span class="p">,</span>
+              <span class="n">pix_r</span> <span class="o">=</span> <span class="n">pix_r</span><span class="p">,</span>
+              <span class="n">pix_c</span> <span class="o">=</span> <span class="n">pix_c</span><span class="p">,</span>
+              <span class="n">step_params</span> <span class="o">=</span> <span class="n">step_params</span><span class="p">)</span>
+
+  <span class="c1"># Overloading method to set the step size = 1 for all the laser cycles. Unlike</span>
+  <span class="c1"># baseclass this removes the requirement of N_pulses to be multiple of N_levels</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">set_decay_schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot; Method to set the stepping schedule for 16 bin EDH</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">decay_schedule</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N_pulses</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">decay_schedule</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+  <span class="c1"># Overload the method to enable all the binners to update for the complete exposure time</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">update_delta_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">delta_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_mask</span><span class="o">*</span><span class="mi">0</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<p>Simulating the custom HEDH variant for desired number of cycles and plotting the trajectories of CV values for all the binners.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spc1</span> <span class="o">=</span> <span class="n">HEDHVariant1</span><span class="p">(</span>
+                <span class="n">Nr</span><span class="p">,</span>
+                <span class="n">Nc</span><span class="p">,</span>
+                <span class="n">N_pulses</span><span class="p">,</span>
+                <span class="n">device</span><span class="p">,</span>
+                <span class="n">N_tbins</span><span class="p">,</span>
+                <span class="n">N_edhbins</span><span class="p">)</span>
+
+<span class="n">postproc</span> <span class="o">=</span> <span class="n">PostProcEDH</span><span class="p">(</span><span class="n">Nr</span><span class="p">,</span> <span class="n">Nc</span><span class="p">,</span> <span class="n">N_tbins</span><span class="p">,</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">tmax</span><span class="p">,</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+<span class="n">captured_data</span> <span class="o">=</span> <span class="n">spc1</span><span class="o">.</span><span class="n">capture</span><span class="p">(</span><span class="n">phi_bar</span><span class="p">)</span>
+<span class="n">pedh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;edh&quot;</span><span class="p">]</span>
+<span class="n">oedh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;oedh&quot;</span><span class="p">]</span>
+<span class="n">ewh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;ewh&quot;</span><span class="p">]</span>
+<span class="n">edh_list</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;traj&quot;</span><span class="p">]</span>
+<span class="n">edh_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">edh_list</span><span class="p">)</span>
+
+<span class="n">ROW</span><span class="p">,</span> <span class="n">COL</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">fig1</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plot_edh_traj</span><span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">edh_list</span><span class="p">,</span> <span class="n">oedh_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">ewh_data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;HEDH CV trajectories for </span><span class="si">%d</span><span class="s1"> pulses&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">spc1</span><span class="o">.</span><span class="n">N_pulses</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 2000/2000 [00:04&lt;00:00, 424.49it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(2000, 7)
+(7,)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 1.0, &#39;HEDH CV trajectories for 2000 pulses&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_TutorialCreateCustomEDH_8_4.png" src="../_images/notebooks_TutorialCreateCustomEDH_8_4.png" />
+</div>
+</div>
+</section>
+<section id="Creating-a-custom-HEDH-variant2">
+<h2>Creating a custom HEDH variant2<a class="headerlink" href="#Creating-a-custom-HEDH-variant2" title="Link to this heading"></a></h2>
+<p>Variant 2 enables all the binners to update for the complete exposure time but the step size is adaptive and is proportional to the difference between early and late photons.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="c1"># Crearting the HEDH variant class</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">HEDHVariant2</span><span class="p">(</span><span class="n">HEDHBaseClass</span><span class="p">):</span>
+  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">Nr</span><span class="p">,</span>
+               <span class="n">Nc</span><span class="p">,</span>
+               <span class="n">N_pulses</span><span class="p">,</span>
+               <span class="n">device</span><span class="p">,</span>
+               <span class="n">N_tbins</span><span class="p">,</span>
+               <span class="n">N_edhbins</span><span class="p">,</span>
+               <span class="n">dead_time</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+               <span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+               <span class="n">save_traj</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+               <span class="n">pix_r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+               <span class="n">pix_c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+               <span class="n">step_params</span> <span class="o">=</span> <span class="p">{}):</span>
+    <span class="n">HEDHBaseClass</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+              <span class="bp">self</span><span class="p">,</span>
+              <span class="n">Nr</span><span class="p">,</span>
+              <span class="n">Nc</span><span class="p">,</span>
+              <span class="n">N_pulses</span><span class="p">,</span>
+              <span class="n">device</span><span class="p">,</span>
+              <span class="n">N_tbins</span><span class="p">,</span>
+              <span class="n">N_edhbins</span><span class="p">,</span>
+              <span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span><span class="p">,</span>
+              <span class="n">save_traj</span> <span class="o">=</span> <span class="n">save_traj</span><span class="p">,</span>
+              <span class="n">pix_r</span> <span class="o">=</span> <span class="n">pix_r</span><span class="p">,</span>
+              <span class="n">pix_c</span> <span class="o">=</span> <span class="n">pix_c</span><span class="p">,</span>
+              <span class="n">step_params</span> <span class="o">=</span> <span class="n">step_params</span><span class="p">)</span>
+
+  <span class="c1"># Overloading method to set the step size = 1 for all the laser cycles. Unlike</span>
+  <span class="c1"># baseclass this removes the requirement of N_pulses to be multiple of N_levels</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">set_decay_schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot; Method to set the stepping schedule for 16 bin EDH</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">decay_schedule</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N_pulses</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">decay_schedule</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+
+  <span class="c1"># Overload the method to enable all the binners to update for the complete exposure time</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">update_delta_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">delta_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_mask</span><span class="o">*</span><span class="mi">0</span> <span class="o">+</span> <span class="mi">1</span>
+
+  <span class="c1"># Almost similar to the base HEDHClass except the step size depends on</span>
+  <span class="c1"># delat and not just the sign of delta</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">update_edh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hist</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot; Update method for proportional EDH</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">decay</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decay_schedule</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">cy_cnt</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">update_delta_mask</span><span class="p">()</span>
+
+    <span class="n">ts</span><span class="p">,</span> <span class="n">hist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ts_from_hist</span><span class="p">(</span><span class="n">hist</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">update_pa_pb_kp</span><span class="p">(</span><span class="n">hist</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">update_delta</span><span class="p">()</span>
+
+    <span class="n">new_step</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">prev_step</span> <span class="o">=</span> <span class="n">new_step</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">decay</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">apply_edh_step</span><span class="p">()</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">edh_bins</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">e1</span><span class="o">*</span><span class="mf">1.0</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">cy_cnt</span><span class="o">+=</span><span class="mi">1</span>
+
+    <span class="c1"># # Uncomment the following line to test if boundaries are crossing!!</span>
+    <span class="c1"># print(torch.sum(torch.diff(self.e1, axis=-1)&lt;0))</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">e1</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spc1</span> <span class="o">=</span> <span class="n">HEDHVariant2</span><span class="p">(</span>
+                <span class="n">Nr</span><span class="p">,</span>
+                <span class="n">Nc</span><span class="p">,</span>
+                <span class="n">N_pulses</span><span class="p">,</span>
+                <span class="n">device</span><span class="p">,</span>
+                <span class="n">N_tbins</span><span class="p">,</span>
+                <span class="n">N_edhbins</span><span class="p">)</span>
+
+<span class="n">postproc</span> <span class="o">=</span> <span class="n">PostProcEDH</span><span class="p">(</span><span class="n">Nr</span><span class="p">,</span> <span class="n">Nc</span><span class="p">,</span> <span class="n">N_tbins</span><span class="p">,</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">tmax</span><span class="p">,</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+<span class="n">captured_data</span> <span class="o">=</span> <span class="n">spc1</span><span class="o">.</span><span class="n">capture</span><span class="p">(</span><span class="n">phi_bar</span><span class="p">)</span>
+<span class="n">pedh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;edh&quot;</span><span class="p">]</span>
+<span class="n">oedh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;oedh&quot;</span><span class="p">]</span>
+<span class="n">ewh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;ewh&quot;</span><span class="p">]</span>
+<span class="n">edh_list</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;traj&quot;</span><span class="p">]</span>
+<span class="n">edh_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">edh_list</span><span class="p">)</span>
+
+<span class="n">ROW</span><span class="p">,</span> <span class="n">COL</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">fig1</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plot_edh_traj</span><span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">edh_list</span><span class="p">,</span> <span class="n">oedh_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">ewh_data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;HEDH CV trajectories for </span><span class="si">%d</span><span class="s1"> pulses&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">spc1</span><span class="o">.</span><span class="n">N_pulses</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 2000/2000 [00:05&lt;00:00, 337.68it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(2000, 7)
+(7,)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 1.0, &#39;HEDH CV trajectories for 2000 pulses&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_TutorialCreateCustomEDH_11_4.png" src="../_images/notebooks_TutorialCreateCustomEDH_11_4.png" />
+</div>
+</div>
+<p>Observe how the adaptive stepping allows binners converge faster in sparse photon region (region away from peak)</p>
+</section>
+<section id="Creating-a-custom-PEDH-variant1">
+<h2>Creating a custom PEDH variant1<a class="headerlink" href="#Creating-a-custom-PEDH-variant1" title="Link to this heading"></a></h2>
+<p>This variant of PEDH class updates the EDH boundaries after every 5 laser cycles instead of updating every laser cycle.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[60]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="k">class</span><span class="w"> </span><span class="nc">PEDHVariant1</span><span class="p">(</span><span class="n">PEDHBaseClass</span><span class="p">):</span>
+  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">Nr</span><span class="p">,</span>
+               <span class="n">Nc</span><span class="p">,</span>
+               <span class="n">N_pulses</span><span class="p">,</span>
+               <span class="n">device</span><span class="p">,</span>
+               <span class="n">N_tbins</span><span class="p">,</span>
+               <span class="n">N_edhbins</span><span class="p">,</span>
+               <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+               <span class="n">save_traj</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+               <span class="n">pix_r</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+               <span class="n">pix_c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+               <span class="n">wait_cycles</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+               <span class="n">step_params</span> <span class="o">=</span> <span class="p">{}):</span>
+
+    <span class="n">PEDHBaseClass</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="p">,</span>
+                            <span class="n">Nr</span><span class="p">,</span>
+                            <span class="n">Nc</span><span class="p">,</span>
+                            <span class="n">N_pulses</span><span class="p">,</span>
+                            <span class="n">device</span><span class="p">,</span>
+                            <span class="n">N_tbins</span><span class="p">,</span>
+                            <span class="n">N_edhbins</span><span class="p">,</span>
+                            <span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span><span class="p">,</span>
+                            <span class="n">save_traj</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                            <span class="n">pix_r</span> <span class="o">=</span> <span class="n">pix_r</span><span class="p">,</span>
+                            <span class="n">pix_c</span> <span class="o">=</span> <span class="n">pix_c</span><span class="p">,</span>
+                            <span class="n">step_params</span><span class="o">=</span><span class="n">step_params</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">wait_cycles</span> <span class="o">=</span> <span class="n">wait_cycles</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">avg_new_step</span> <span class="o">=</span> <span class="mi">0</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="nf">update_edh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hist</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot; Update method applying temporal decay and temporal smoothing and scaling based on</span>
+<span class="sd">    optimized stepping strategy for PEDH.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">decay</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decay_schedule</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">cy_cnt</span><span class="p">]</span>
+
+    <span class="n">ts</span><span class="p">,</span> <span class="n">hist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ts_from_hist</span><span class="p">(</span><span class="n">hist</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">update_pa_pb_kp</span><span class="p">(</span><span class="n">hist</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">update_delta</span><span class="p">()</span>
+
+    <span class="c1"># Applying scaling on step size</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">avg_new_step</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">avg_new_step</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+    <span class="c1"># Updating the binners only after every `wait_cycles` cycles</span>
+    <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cy_cnt</span><span class="o">%</span><span class="k">self</span>.wait_cycles == 0) and (self.cy_cnt):
+
+      <span class="n">new_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">avg_new_step</span><span class="o">*</span><span class="mf">1.0</span>
+
+      <span class="c1"># Applying temporal smoothing and decay on the step size</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">prev_step</span> <span class="o">=</span> <span class="n">new_step</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">decay</span>
+
+      <span class="c1"># Appying the final update step</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">apply_edh_step</span><span class="p">()</span>
+
+      <span class="bp">self</span><span class="o">.</span><span class="n">avg_new_step</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">cy_cnt</span><span class="o">+=</span><span class="mi">1</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">e1</span>
+</pre></div>
+</div>
+</div>
+<p>Increasing the wait cycle significantly affects the binner trajectories</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_pulses</span> <span class="o">=</span> <span class="mi">2000</span>
+<span class="n">wait_cycles</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">step_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;k&quot;</span><span class="p">:</span><span class="mi">5</span><span class="p">}</span>
+<span class="n">spc1</span> <span class="o">=</span> <span class="n">PEDHVariant1</span><span class="p">(</span>
+                <span class="n">Nr</span><span class="p">,</span>
+                <span class="n">Nc</span><span class="p">,</span>
+                <span class="n">N_pulses</span><span class="p">,</span>
+                <span class="n">device</span><span class="p">,</span>
+                <span class="n">N_tbins</span><span class="p">,</span>
+                <span class="n">N_edhbins</span><span class="p">,</span>
+                <span class="n">wait_cycles</span><span class="o">=</span><span class="n">wait_cycles</span><span class="p">,</span>
+                <span class="n">step_params</span> <span class="o">=</span> <span class="n">step_params</span><span class="p">)</span>
+
+<span class="n">postproc</span> <span class="o">=</span> <span class="n">PostProcEDH</span><span class="p">(</span><span class="n">Nr</span><span class="p">,</span> <span class="n">Nc</span><span class="p">,</span> <span class="n">N_tbins</span><span class="p">,</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">tmax</span><span class="p">,</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+<span class="n">captured_data</span> <span class="o">=</span> <span class="n">spc1</span><span class="o">.</span><span class="n">capture</span><span class="p">(</span><span class="n">phi_bar</span><span class="p">)</span>
+<span class="n">pedh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;edh&quot;</span><span class="p">]</span>
+<span class="n">oedh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;oedh&quot;</span><span class="p">]</span>
+<span class="n">ewh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;ewh&quot;</span><span class="p">]</span>
+<span class="n">edh_list</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;traj&quot;</span><span class="p">]</span>
+<span class="n">edh_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">edh_list</span><span class="p">)</span>
+
+<span class="n">ROW</span><span class="p">,</span> <span class="n">COL</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">fig1</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plot_edh_traj</span><span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">edh_list</span><span class="p">,</span> <span class="n">oedh_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">ewh_data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;HEDH CV trajectories for </span><span class="si">%d</span><span class="s1"> pulses&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">spc1</span><span class="o">.</span><span class="n">N_pulses</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 2000/2000 [00:02&lt;00:00, 687.08it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(2000, 7)
+(7,)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 1.0, &#39;HEDH CV trajectories for 2000 pulses&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_TutorialCreateCustomEDH_16_4.png" src="../_images/notebooks_TutorialCreateCustomEDH_16_4.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[70]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wait_cycles</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">spc1</span> <span class="o">=</span> <span class="n">PEDHVariant1</span><span class="p">(</span>
+                <span class="n">Nr</span><span class="p">,</span>
+                <span class="n">Nc</span><span class="p">,</span>
+                <span class="n">N_pulses</span><span class="p">,</span>
+                <span class="n">device</span><span class="p">,</span>
+                <span class="n">N_tbins</span><span class="p">,</span>
+                <span class="n">N_edhbins</span><span class="p">,</span>
+                <span class="n">wait_cycles</span><span class="o">=</span><span class="n">wait_cycles</span><span class="p">,</span>
+                <span class="n">step_params</span> <span class="o">=</span> <span class="n">step_params</span><span class="p">)</span>
+
+<span class="n">postproc</span> <span class="o">=</span> <span class="n">PostProcEDH</span><span class="p">(</span><span class="n">Nr</span><span class="p">,</span> <span class="n">Nc</span><span class="p">,</span> <span class="n">N_tbins</span><span class="p">,</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">tmax</span><span class="p">,</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+<span class="n">captured_data</span> <span class="o">=</span> <span class="n">spc1</span><span class="o">.</span><span class="n">capture</span><span class="p">(</span><span class="n">phi_bar</span><span class="p">)</span>
+<span class="n">pedh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;edh&quot;</span><span class="p">]</span>
+<span class="n">oedh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;oedh&quot;</span><span class="p">]</span>
+<span class="n">ewh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;ewh&quot;</span><span class="p">]</span>
+<span class="n">edh_list</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;traj&quot;</span><span class="p">]</span>
+<span class="n">edh_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">edh_list</span><span class="p">)</span>
+
+<span class="n">ROW</span><span class="p">,</span> <span class="n">COL</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">fig1</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plot_edh_traj</span><span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">edh_list</span><span class="p">,</span> <span class="n">oedh_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">ewh_data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;HEDH CV trajectories for </span><span class="si">%d</span><span class="s1"> pulses&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">spc1</span><span class="o">.</span><span class="n">N_pulses</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 2000/2000 [00:02&lt;00:00, 759.11it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(2000, 7)
+(7,)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[70]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 1.0, &#39;HEDH CV trajectories for 2000 pulses&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_TutorialCreateCustomEDH_17_3.png" src="../_images/notebooks_TutorialCreateCustomEDH_17_3.png" />
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Custom3DSensingPipeline.html" class="btn btn-neutral float-left" title="Customized 3D imaging pipeline" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="DeePEDH_ECCV24.html" class="btn btn-neutral float-right" title="Single-Photon 3D Imaging with Equi-Depth Photon Histograms (ECCV24)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Kaustubh Sadekar, Atul Ingle, David Maier.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

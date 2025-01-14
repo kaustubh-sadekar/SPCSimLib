@@ -1,0 +1,205 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPCSim.data_loaders.perpixel_loaders &mdash; SPCSim 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            SPCSim
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Getting started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/DataLoaders.html">Data loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/DToFSensors.html">Simulate dToF Sensors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Custom3DSensingPipeline.html">Customized 3D imaging pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/TutorialCreateCustomEDH.html">Create custom equi-depth histogrammers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research Paper Implementations:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/DeePEDH_ECCV24.html">Single-Photon 3D Imaging with Equi-Depth Photon Histograms (ECCV24)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">SPCSim API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">SPCSim</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">SPCSim.data_loaders.perpixel_loaders</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for SPCSim.data_loaders.perpixel_loaders</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<div class="viewcode-block" id="PerPixelLoader">
+<a class="viewcode-back" href="../../../SPCSim.data_loaders.html#SPCSim.data_loaders.perpixel_loaders.PerPixelLoader">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PerPixelLoader</span><span class="p">:</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  This class loads a custom RGB-D image with each row consisting of different</span>
+<span class="sd">  distance values and avg signal-background photons and R columns where R is the</span>
+<span class="sd">  number of runs to be captured for each pixel with a specific SBR and distance</span>
+<span class="sd">  combination.</span>
+<span class="sd">  </span>
+<span class="sd">  .. note:: If A is the output transient matrix then A[i,j] gives readings for </span>
+<span class="sd">            ``dist_idx = i % len(SBR_list)``, ``SBR_Pair_idx = (i/num_dists)``, and ``Run_idx = j``.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">num_dists</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+               <span class="n">min_dist</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+               <span class="n">max_dist</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+               <span class="n">sig_bkg_list</span> <span class="o">=</span> <span class="p">[</span>
+                          <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+                          <span class="p">],</span>
+               <span class="n">tmax</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="c1">#time period in nano-seconds</span>
+               <span class="n">num_runs</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+               <span class="n">device</span> <span class="o">=</span> <span class="s1">&#39;cpu&#39;</span><span class="p">,</span>
+               <span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">dmax</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="mf">1e8</span><span class="o">*</span><span class="n">tmax</span><span class="o">*</span><span class="mf">1e-9</span><span class="o">/</span><span class="mi">2</span> <span class="c1"># scene distance in meters dmax = (c*tmax)/2</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">num_runs</span> <span class="o">=</span> <span class="n">num_runs</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">num_dists</span> <span class="o">=</span> <span class="n">num_dists</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">min_dist</span> <span class="o">=</span> <span class="n">min_dist</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">max_dist</span> <span class="o">=</span> <span class="n">max_dist</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sig_bkg_list</span> <span class="o">=</span> <span class="n">sig_bkg_list</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">tmax</span> <span class="o">=</span> <span class="n">tmax</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">Nr</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">Nc</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="PerPixelLoader.get_data">
+<a class="viewcode-back" href="../../../SPCSim.data_loaders.html#SPCSim.data_loaders.perpixel_loaders.PerPixelLoader.get_data">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Method to generate the rgb-d data along with the average signal and background photon flux per cycle.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        data (dictionary): Dictionary containing the generated RGB, distance image, albedo, signal and bkg flux</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">dist_list</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min_dist</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_dist</span><span class="p">,</span> <span class="n">num</span> <span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_dists</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">nr</span><span class="p">,</span><span class="n">nc</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sig_bkg_list</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">num_dists</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">num_runs</span><span class="p">]</span>
+    <span class="n">alpha_sig</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nr</span><span class="p">,</span> <span class="n">nc</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">alpha_bkg</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nr</span><span class="p">,</span> <span class="n">nc</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">dist_f</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nr</span><span class="p">,</span> <span class="n">nc</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sig_bkg_list</span><span class="p">)):</span>
+      <span class="n">alpha_sig</span><span class="p">[</span><span class="n">row</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">num_dists</span><span class="p">:(</span><span class="n">row</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">num_dists</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sig_bkg_list</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+      <span class="n">alpha_bkg</span><span class="p">[</span><span class="n">row</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">num_dists</span><span class="p">:(</span><span class="n">row</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">num_dists</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sig_bkg_list</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+      <span class="n">dist_f</span><span class="p">[</span><span class="n">row</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">num_dists</span><span class="p">:(</span><span class="n">row</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">num_dists</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">dist_list</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">albedo</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nr</span><span class="p">,</span><span class="n">nc</span><span class="p">)))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">rgb</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nr</span><span class="p">,</span><span class="n">nc</span><span class="p">,</span><span class="mi">3</span><span class="p">)))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">gt_dist_factor</span> <span class="o">=</span> <span class="n">dist_f</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">nr</span><span class="p">,</span><span class="n">nc</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">gt_dist</span> <span class="o">=</span> <span class="n">gt_dist_factor</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dmax</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">Nr</span> <span class="o">=</span> <span class="n">nr</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">Nc</span> <span class="o">=</span> <span class="n">nc</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;rgb&#39;</span><span class="p">:</span><span class="n">rgb</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">),</span>
+        <span class="s1">&#39;albedo&#39;</span><span class="p">:</span><span class="n">albedo</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">),</span>
+        <span class="s1">&#39;gt_dist&#39;</span><span class="p">:</span><span class="n">gt_dist</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">),</span>
+        <span class="s1">&#39;alpha_sig&#39;</span><span class="p">:</span><span class="n">alpha_sig</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">),</span>
+        <span class="s1">&#39;alpha_bkg&#39;</span><span class="p">:</span><span class="n">alpha_bkg</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">),</span>
+        <span class="s1">&#39;loader_id&#39;</span><span class="p">:</span><span class="s2">&quot;perpixel&quot;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">data</span></div>
+
+  
+<div class="viewcode-block" id="PerPixelLoader.get_row">
+<a class="viewcode-back" href="../../../SPCSim.data_loaders.html#SPCSim.data_loaders.perpixel_loaders.PerPixelLoader.get_row">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">get_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sbr_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dist_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">sbr_idx</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">num_dists</span> <span class="o">+</span> <span class="n">dist_idx</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Kaustubh Sadekar, Atul Ingle, David Maier.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,340 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPCSim.data_loaders.rgbd_loaders &mdash; SPCSim 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            SPCSim
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Getting started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/DataLoaders.html">Data loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/DToFSensors.html">Simulate dToF Sensors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Custom3DSensingPipeline.html">Customized 3D imaging pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/TutorialCreateCustomEDH.html">Create custom equi-depth histogrammers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research Paper Implementations:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/DeePEDH_ECCV24.html">Single-Photon 3D Imaging with Equi-Depth Photon Histograms (ECCV24)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">SPCSim API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">SPCSim</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">SPCSim.data_loaders.rgbd_loaders</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for SPCSim.data_loaders.rgbd_loaders</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<div class="viewcode-block" id="RGBDLoader">
+<a class="viewcode-back" href="../../../SPCSim.data_loaders.html#SPCSim.data_loaders.rgbd_loaders.RGBDLoader">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RGBDLoader</span><span class="p">:</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;General class to load RGB-D datasets</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">Nr</span><span class="p">,</span>
+               <span class="n">Nc</span><span class="p">,</span>
+               <span class="n">crop_r1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+               <span class="n">crop_r2</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+               <span class="n">crop_c1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+               <span class="n">crop_c2</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+               <span class="n">device</span> <span class="o">=</span> <span class="s1">&#39;cpu&#39;</span><span class="p">,</span>
+               <span class="n">n_tbins</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+               <span class="n">tmax</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="c1">#time period in nano-seconds</span>
+               <span class="n">folder</span> <span class="o">=</span> <span class="s1">&#39;train&#39;</span>
+               <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        Nr (int): Number of pixel rows in resized frame</span>
+<span class="sd">        Nc (int): Number of pixel columns in resized frame</span>
+<span class="sd">        crop_r1 (int, optional): Starting row to crop image. Defaults to 0.</span>
+<span class="sd">        crop_r2 (int, optional): Ending row to crop image. Defaults to -1.</span>
+<span class="sd">        crop_c1 (int, optional): Starting column to crop image. Defaults to 0.</span>
+<span class="sd">        crop_c2 (int, optional): Ending column to crop image. Defaults to -1.</span>
+<span class="sd">        device (str, optional): Choice of compute device. Defaults to &#39;cpu&#39;.</span>
+<span class="sd">        n_tbins (int, optional): Number of discrete time bins dividing the laser time period. Defaults to 1000.</span>
+<span class="sd">        tmax (int, optional): Laser time period in nano seconds. Defaults to 100.</span>
+
+<span class="sd">    .. note:: tmax is in nano seconds and not in seconds</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">dmax</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="mf">1e8</span><span class="o">*</span><span class="n">tmax</span><span class="o">*</span><span class="mf">1e-9</span><span class="o">/</span><span class="mi">2</span> <span class="c1"># scene distance in meters dmax = (c*tmax)/2</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">folder</span> <span class="o">=</span> <span class="n">folder</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">Nr</span> <span class="o">=</span> <span class="n">Nr</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">Nc</span> <span class="o">=</span> <span class="n">Nc</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">N_tbins</span> <span class="o">=</span> <span class="n">n_tbins</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">crop_r1</span> <span class="o">=</span> <span class="n">crop_r1</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">crop_r2</span> <span class="o">=</span> <span class="n">crop_r2</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">crop_c1</span> <span class="o">=</span> <span class="n">crop_c1</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">crop_c2</span> <span class="o">=</span> <span class="n">crop_c2</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">loader_id</span> <span class="o">=</span> <span class="s2">&quot;RGBDLoader&quot;</span>
+  
+<div class="viewcode-block" id="RGBDLoader.load_dist">
+<a class="viewcode-back" href="../../../SPCSim.data_loaders.html#SPCSim.data_loaders.rgbd_loaders.RGBDLoader.load_dist">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">load_dist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dist_pth</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Method to load the distance image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">dist_img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">dist_pth</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_r1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_r2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_c1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_c2</span><span class="p">],(</span><span class="bp">self</span><span class="o">.</span><span class="n">Nr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nc</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">dist_img</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span></div>
+
+  
+<div class="viewcode-block" id="RGBDLoader.load_rgb">
+<a class="viewcode-back" href="../../../SPCSim.data_loaders.html#SPCSim.data_loaders.rgbd_loaders.RGBDLoader.load_rgb">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">load_rgb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rgb_pth</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Method to load the rgb image </span>
+<span class="sd">    </span>
+<span class="sd">    .. note:: The color channels are flipped as cv2.imread reads bgr image instead of rgb</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rgb_img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">rgb_pth</span><span class="p">,</span><span class="mi">1</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_r1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_r2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_c1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_c2</span><span class="p">,::</span><span class="o">-</span><span class="mi">1</span><span class="p">],(</span><span class="bp">self</span><span class="o">.</span><span class="n">Nr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nc</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">rgb_img</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RGBDLoader.load_albedo">
+<a class="viewcode-back" href="../../../SPCSim.data_loaders.html#SPCSim.data_loaders.rgbd_loaders.RGBDLoader.load_albedo">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">load_albedo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">albedo_pth</span><span class="p">,</span> <span class="n">read_mode</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Method to load the albedo image </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">albedo</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">albedo_pth</span><span class="p">,</span><span class="n">read_mode</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_r1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_r2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_c1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_c2</span><span class="p">],(</span><span class="bp">self</span><span class="o">.</span><span class="n">Nr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nc</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">albedo</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span></div>
+
+  
+<div class="viewcode-block" id="RGBDLoader.load_intensity">
+<a class="viewcode-back" href="../../../SPCSim.data_loaders.html#SPCSim.data_loaders.rgbd_loaders.RGBDLoader.load_intensity">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">load_intensity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">intensity_pth</span><span class="p">,</span> <span class="n">read_mode</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Method to load the intensity image </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">intensity</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">intensity_pth</span><span class="p">,</span><span class="n">read_mode</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_r1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_r2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">crop_c1</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">crop_c2</span><span class="p">],(</span><span class="bp">self</span><span class="o">.</span><span class="n">Nr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nc</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">intensity</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span></div>
+
+  
+<div class="viewcode-block" id="RGBDLoader.rgb_preproc">
+<a class="viewcode-back" href="../../../SPCSim.data_loaders.html#SPCSim.data_loaders.rgbd_loaders.RGBDLoader.rgb_preproc">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">rgb_preproc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rgb</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Method to preprocess the rgb image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">rgb</span></div>
+
+  
+<div class="viewcode-block" id="RGBDLoader.albedo_preproc">
+<a class="viewcode-back" href="../../../SPCSim.data_loaders.html#SPCSim.data_loaders.rgbd_loaders.RGBDLoader.albedo_preproc">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">albedo_preproc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">albedo</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Method to preprocess the albedo image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">albedo</span></div>
+
+  
+<div class="viewcode-block" id="RGBDLoader.intensity_preproc">
+<a class="viewcode-back" href="../../../SPCSim.data_loaders.html#SPCSim.data_loaders.rgbd_loaders.RGBDLoader.intensity_preproc">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">intensity_preproc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">intensity</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Method to preprocess the intensity image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">intensity</span></div>
+
+  
+<div class="viewcode-block" id="RGBDLoader.dist_preproc">
+<a class="viewcode-back" href="../../../SPCSim.data_loaders.html#SPCSim.data_loaders.rgbd_loaders.RGBDLoader.dist_preproc">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">dist_preproc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dist</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Method to preprocess the distance image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">dist</span></div>
+
+  
+<div class="viewcode-block" id="RGBDLoader.get_data">
+<a class="viewcode-back" href="../../../SPCSim.data_loaders.html#SPCSim.data_loaders.rgbd_loaders.RGBDLoader.get_data">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">rgb_pth</span><span class="p">,</span><span class="n">dist_pth</span><span class="p">,</span><span class="n">albedo_pth</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">intensity_pth</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Method to get the RGB-D data</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        rgb_pth (str): File path to rgb image</span>
+<span class="sd">        dist_pth (str): File path to distance image</span>
+<span class="sd">        albedo_pth (str, optional): _description_. Defaults to &quot;&quot;.</span>
+<span class="sd">        intensity_pth (str, optional): _description_. Defaults to &quot;&quot;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        data (dictionary): Dictionary containing the rgb, intensity, albedo and distance image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">rgb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rgb_preproc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">load_rgb</span><span class="p">(</span><span class="n">rgb_pth</span><span class="p">))</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dist_preproc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">load_dist</span><span class="p">(</span><span class="n">dist_pth</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">albedo_pth</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+      <span class="n">albedo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">albedo_preproc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">load_albedo</span><span class="p">(</span><span class="n">rgb_pth</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">albedo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">albedo_preproc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">load_albedo</span><span class="p">(</span><span class="n">albedo_pth</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">intensity_pth</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+      <span class="n">intensity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intensity_preproc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">load_intensity</span><span class="p">(</span><span class="n">rgb_pth</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">intensity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intensity_preproc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">load_intensity</span><span class="p">(</span><span class="n">intensity_pth</span><span class="p">))</span>
+    
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;rgb&#39;</span><span class="p">:</span><span class="n">rgb</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">),</span>
+        <span class="s1">&#39;albedo&#39;</span><span class="p">:</span><span class="n">albedo</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">),</span>
+        <span class="s1">&#39;intensity&#39;</span><span class="p">:</span><span class="n">intensity</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">),</span>
+        <span class="s1">&#39;gt_dist&#39;</span><span class="p">:</span><span class="n">dist</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">),</span>
+        <span class="s1">&#39;loader_id&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">loader_id</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">data</span></div>
+</div>
+
+
+<div class="viewcode-block" id="NYULoader1">
+<a class="viewcode-back" href="../../../SPCSim.data_loaders.html#SPCSim.data_loaders.rgbd_loaders.NYULoader1">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">NYULoader1</span><span class="p">(</span><span class="n">RGBDLoader</span><span class="p">):</span>
+  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">Nr</span><span class="p">,</span>
+               <span class="n">Nc</span><span class="p">,</span>
+               <span class="n">crop_r1</span><span class="o">=</span><span class="mi">44</span><span class="p">,</span>
+               <span class="n">crop_r2</span><span class="o">=</span><span class="mi">470</span><span class="p">,</span>
+               <span class="n">crop_c1</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+               <span class="n">crop_c2</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+               <span class="n">device</span> <span class="o">=</span> <span class="s1">&#39;cpu&#39;</span><span class="p">,</span>
+               <span class="n">n_tbins</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+               <span class="n">tmax</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="c1">#time period in nano-seconds</span>
+               <span class="n">folder</span> <span class="o">=</span> <span class="s1">&#39;train&#39;</span>
+               <span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Data loader for NYUv2 dataset</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        Nr (int): Number of pixel rows in resized frame</span>
+<span class="sd">        Nc (int): Number of pixel columns in resized frame</span>
+<span class="sd">        crop_r1 (int, optional): Starting row to crop image. Defaults to 0.</span>
+<span class="sd">        crop_r2 (int, optional): Ending row to crop image. Defaults to -1.</span>
+<span class="sd">        crop_c1 (int, optional): Starting column to crop image. Defaults to 0.</span>
+<span class="sd">        crop_c2 (int, optional): Ending column to crop image. Defaults to -1.</span>
+<span class="sd">        device (str, optional): Choice of compute device. Defaults to &#39;cpu&#39;.</span>
+<span class="sd">        n_tbins (int, optional): Number of discrete time bins dividing the laser time period. Defaults to 1000.</span>
+<span class="sd">        tmax (int, optional): Laser time period in nano seconds. Defaults to 100.</span>
+
+<span class="sd">    .. note:: tmax is in nano seconds and not in seconds</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">RGBDLoader</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Nr</span><span class="p">,</span>
+                        <span class="n">Nc</span><span class="p">,</span>
+                        <span class="n">crop_r1</span><span class="o">=</span><span class="n">crop_r1</span><span class="p">,</span>
+                        <span class="n">crop_r2</span><span class="o">=</span><span class="n">crop_r2</span><span class="p">,</span>
+                        <span class="n">crop_c1</span><span class="o">=</span><span class="n">crop_c1</span><span class="p">,</span>
+                        <span class="n">crop_c2</span><span class="o">=</span><span class="n">crop_c2</span><span class="p">,</span>
+                        <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+                        <span class="n">n_tbins</span><span class="o">=</span><span class="n">n_tbins</span><span class="p">,</span>
+                        <span class="n">tmax</span><span class="o">=</span><span class="n">tmax</span><span class="p">,</span>
+                        <span class="n">folder</span><span class="o">=</span><span class="n">folder</span><span class="p">)</span>
+    
+    <span class="bp">self</span><span class="o">.</span><span class="n">loader_id</span> <span class="o">=</span> <span class="s2">&quot;NYULoader1&quot;</span>
+
+<div class="viewcode-block" id="NYULoader1.dist_preproc">
+<a class="viewcode-back" href="../../../SPCSim.data_loaders.html#SPCSim.data_loaders.rgbd_loaders.NYULoader1.dist_preproc">[docs]</a>
+  <span class="k">def</span><span class="w"> </span><span class="nf">dist_preproc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dist</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">folder</span> <span class="o">==</span> <span class="s2">&quot;test&quot;</span><span class="p">:</span>
+      <span class="n">dist</span> <span class="o">=</span> <span class="n">dist</span><span class="o">*</span><span class="mf">10.0</span><span class="o">/</span><span class="p">(</span><span class="mf">655.35</span><span class="o">*</span><span class="mf">15.256</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">dist</span> <span class="o">=</span> <span class="n">dist</span><span class="o">*</span><span class="mf">10.0</span><span class="o">/</span><span class="mf">255.0</span>
+    
+    <span class="k">return</span> <span class="n">dist</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Kaustubh Sadekar, Atul Ingle, David Maier.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

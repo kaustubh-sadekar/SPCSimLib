@@ -1,0 +1,735 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulate dToF Sensors &mdash; SPCSim 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Customized 3D imaging pipeline" href="Custom3DSensingPipeline.html" />
+    <link rel="prev" title="Data loaders" href="DataLoaders.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SPCSim
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Getting started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="DataLoaders.html">Data loaders</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Simulate dToF Sensors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Simulate-RawSPC">Simulate RawSPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Simulate-EWHSPC">Simulate EWHSPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Simulate-basic-EDH-SPCs">Simulate basic EDH SPCs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Simulate-hierarchical-EDH-SPCs">Simulate hierarchical EDH SPCs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Simulate-proportional-EDH-SPCs">Simulate proportional EDH SPCs</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Custom3DSensingPipeline.html">Customized 3D imaging pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TutorialCreateCustomEDH.html">Create custom equi-depth histogrammers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research Paper Implementations:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="DeePEDH_ECCV24.html">Single-Photon 3D Imaging with Equi-Depth Photon Histograms (ECCV24)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">SPCSim API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SPCSim</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Simulate dToF Sensors</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/notebooks/DToFSensors.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Simulate-dToF-Sensors">
+<h1>Simulate dToF Sensors<a class="headerlink" href="#Simulate-dToF-Sensors" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">dtof</span></code> module of the <code class="docutils literal notranslate"><span class="pre">sensors</span></code> subpackage provides implementations for multiple dToF SPC cameras, allowing users to choose how the SPC data is captured and processed. In this tutorial we will explore three major types of SPC sensor classes.</p>
+<section id="Simulate-RawSPC">
+<h2>Simulate RawSPC<a class="headerlink" href="#Simulate-RawSPC" title="Link to this heading"></a></h2>
+<p>The camera simulated using <code class="docutils literal notranslate"><span class="pre">RawSPC</span></code> class generates photon cube of raw timestamps. We use the <code class="docutils literal notranslate"><span class="pre">PerPixelLoader</span></code> class to simulate different scene distances and illumination conditions.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">SPCSim.data_loaders.perpixel_loaders</span><span class="w"> </span><span class="kn">import</span> <span class="n">PerPixelLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">SPCSim.data_loaders.transient_loaders</span><span class="w"> </span><span class="kn">import</span> <span class="n">TransientGenerator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">SPCSim.utils.plot_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_transient</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">SPCSim.sensors.dtof</span><span class="w"> </span><span class="kn">import</span> <span class="n">RawSPC</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+
+<span class="c1"># Simulating results for distance = 0.1*dmax</span>
+<span class="n">PixLdr</span> <span class="o">=</span> <span class="n">PerPixelLoader</span><span class="p">(</span>
+                        <span class="n">num_dists</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                        <span class="n">min_dist</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+                        <span class="n">max_dist</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">,</span>
+                        <span class="n">tmax</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+                        <span class="n">sig_bkg_list</span> <span class="o">=</span> <span class="p">[</span>
+                            <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.2</span><span class="p">]],</span>
+                        <span class="n">num_runs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                        <span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+
+<span class="c1"># Generate the per pixel data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+
+
+<span class="c1"># Creating transient generator with laser time period of 100ns, FWHM 1 and with</span>
+<span class="c1"># laser time period divided into 1000 equal time-bins</span>
+<span class="n">tr_gen</span> <span class="o">=</span> <span class="n">TransientGenerator</span><span class="p">(</span><span class="n">Nr</span> <span class="o">=</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">Nr</span><span class="p">,</span> <span class="n">Nc</span> <span class="o">=</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">Nc</span><span class="p">,</span> <span class="n">N_tbins</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">tmax</span> <span class="o">=</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">tmax</span><span class="p">,</span> <span class="n">FWHM</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+
+
+<span class="c1"># Using the get function to generate the transient</span>
+<span class="c1"># for a given distance, albedo, intensity, and illumination condition</span>
+<span class="n">phi_bar</span> <span class="o">=</span> <span class="n">tr_gen</span><span class="o">.</span><span class="n">get_transient</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;gt_dist&quot;</span><span class="p">],</span>
+                               <span class="n">data</span><span class="p">[</span><span class="s2">&quot;albedo&quot;</span><span class="p">],</span>
+                               <span class="n">data</span><span class="p">[</span><span class="s2">&quot;albedo&quot;</span><span class="p">],</span>
+                               <span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_sig&quot;</span><span class="p">],</span>
+                               <span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_bkg&quot;</span><span class="p">])</span>
+
+<span class="n">Nr</span><span class="p">,</span> <span class="n">Nc</span><span class="p">,</span> <span class="n">N_tbins</span> <span class="o">=</span> <span class="n">phi_bar</span><span class="o">.</span><span class="n">shape</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">device</span>
+</pre></div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">capture</span></code> method returns the raw_data and corresponding equi-width histogram data. The raw_data is a 3D tensor of shape <code class="docutils literal notranslate"><span class="pre">(Nr,Nc,N_output_ts)</span></code> where <code class="docutils literal notranslate"><span class="pre">N_output_ts</span></code> is the number of output timestamps per pixels.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Note:</span> <span class="pre">To</span> <span class="pre">support</span> <span class="pre">vectorized</span> <span class="pre">computations</span> <span class="pre">the</span> <span class="pre">current</span> <span class="pre">implementation</span> <span class="pre">of</span> <span class="pre">RawSPC</span> <span class="pre">assumes</span> <span class="pre">one</span> <span class="pre">time</span> <span class="pre">stamp</span> <span class="pre">vector</span> <span class="pre">per</span> <span class="pre">laser</span> <span class="pre">cycle</span> <span class="pre">and</span> <span class="pre">returns</span> <span class="pre">0</span> <span class="pre">if</span> <span class="pre">no</span> <span class="pre">timestamp</span> <span class="pre">is</span> <span class="pre">detected</span> <span class="pre">for</span> <span class="pre">a</span> <span class="pre">laser</span> <span class="pre">cycle.</span> <span class="pre">(Hence</span> <span class="pre">N_pulses</span> <span class="pre">=</span> <span class="pre">N_output_ts)</span></code></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">N_output_ts</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="n">N_pulses</span> <span class="o">=</span> <span class="mi">400</span>
+
+<span class="c1"># Creating the RawSPC object with desired intrinsic properties</span>
+<span class="n">spc1</span> <span class="o">=</span> <span class="n">RawSPC</span><span class="p">(</span><span class="n">Nr</span><span class="p">,</span>
+              <span class="n">Nc</span><span class="p">,</span>
+              <span class="n">N_pulses</span><span class="p">,</span>
+              <span class="n">device</span><span class="p">,</span>
+              <span class="n">N_tbins</span><span class="p">,</span>
+              <span class="n">N_output_ts</span><span class="p">)</span>
+
+<span class="c1"># Captured data contains timestamps (Nr x Nc x N_output_ts) and ewh (Nr x Nc x N_tbins)</span>
+<span class="n">captured_data</span> <span class="o">=</span> <span class="n">spc1</span><span class="o">.</span><span class="n">capture</span><span class="p">(</span><span class="n">phi_bar</span><span class="p">)</span>
+
+<span class="c1"># Accessing the timestamp data</span>
+<span class="n">raw_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;time_stamps&quot;</span><span class="p">]</span>
+
+<span class="c1"># Accessing the corresponding ewh</span>
+<span class="n">ewh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;ewh&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 400/400 [00:00&lt;00:00, 1028.28it/s]
+</pre></div></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">capture</span></code> method returns a dictionary containing the raw timestamps and the captured equi-width histogram. The raw timestamps are passed to <code class="docutils literal notranslate"><span class="pre">torch.histogram</span></code> to create an equi-width histogram. The overlapping blue and red graphs indicate that <code class="docutils literal notranslate"><span class="pre">N_output_ts</span></code> is large enough to store all the time stamps detected by the camera for the complete exposure time. (Try playing with different combinations of background or signal flux or the number of laser cycles for better understanding)</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">xaxis</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mi">1</span><span class="o">+</span><span class="n">N_tbins</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">xaxis</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">)</span>
+
+
+<span class="c1"># For first distance value and second run</span>
+<span class="n">ROW</span> <span class="o">=</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">get_row</span><span class="p">(</span><span class="n">sbr_idx</span> <span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dist_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">RUN</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">hist</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">raw_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">RUN</span><span class="p">,:],</span> <span class="n">xaxis</span><span class="p">)</span>
+<span class="n">hist2</span> <span class="o">=</span> <span class="n">ewh_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">RUN</span><span class="p">,:]</span>
+<span class="n">plot_transient</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">hist2</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">plt_type</span> <span class="o">=</span> <span class="s1">&#39;-b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Captured EW histogram&quot;</span><span class="p">)</span>
+<span class="n">plot_transient</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">hist</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">plt_type</span> <span class="o">=</span> <span class="s1">&#39;--r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Timestamps histogram&quot;</span><span class="p">)</span>
+<span class="n">plot_transient</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">phi_bar</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">RUN</span><span class="p">,:]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">*</span><span class="n">spc1</span><span class="o">.</span><span class="n">N_output_ts</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">phi_bar</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)),</span> <span class="n">plt_type</span> <span class="o">=</span> <span class="s1">&#39;-g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True Transient&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Bins&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Histogram of raw data for $\Phi_</span><span class="si">{sig}</span><span class="s1">$ = </span><span class="si">%.2f</span><span class="s1">, $\Phi_</span><span class="si">{bkg}</span><span class="s1">$ = </span><span class="si">%.2f</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_sig&quot;</span><span class="p">][</span><span class="n">ROW</span><span class="p">,</span> <span class="n">RUN</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_bkg&quot;</span><span class="p">][</span><span class="n">ROW</span><span class="p">,</span> <span class="n">RUN</span><span class="p">]))</span>
+
+<span class="c1"># For second distance value and second run</span>
+<span class="n">ROW</span> <span class="o">=</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">get_row</span><span class="p">(</span><span class="n">sbr_idx</span> <span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dist_idx</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">RUN</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">hist</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">raw_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">RUN</span><span class="p">,:],</span> <span class="n">xaxis</span><span class="p">)</span>
+<span class="n">hist2</span> <span class="o">=</span> <span class="n">ewh_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">RUN</span><span class="p">,:]</span>
+<span class="n">plot_transient</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">hist2</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">plt_type</span> <span class="o">=</span> <span class="s1">&#39;-b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Captured EW histogram&quot;</span><span class="p">)</span>
+<span class="n">plot_transient</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">hist</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">plt_type</span> <span class="o">=</span> <span class="s1">&#39;--r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Timestamps histogram&quot;</span><span class="p">)</span>
+<span class="n">plot_transient</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">phi_bar</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">RUN</span><span class="p">,:]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">*</span><span class="n">spc1</span><span class="o">.</span><span class="n">N_output_ts</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">phi_bar</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)),</span> <span class="n">plt_type</span> <span class="o">=</span> <span class="s1">&#39;-g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True Transient&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Bins&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Histogram of raw data for $\Phi_</span><span class="si">{sig}</span><span class="s1">$ = </span><span class="si">%.2f</span><span class="s1">, $\Phi_</span><span class="si">{bkg}</span><span class="s1">$ = </span><span class="si">%.2f</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_sig&quot;</span><span class="p">][</span><span class="n">ROW</span><span class="p">,</span> <span class="n">RUN</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_bkg&quot;</span><span class="p">][</span><span class="n">ROW</span><span class="p">,</span> <span class="n">RUN</span><span class="p">]))</span>
+
+<span class="c1"># For third distance value and second run</span>
+<span class="n">ROW</span> <span class="o">=</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">get_row</span><span class="p">(</span><span class="n">sbr_idx</span> <span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dist_idx</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">RUN</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">hist</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">raw_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">RUN</span><span class="p">,:],</span> <span class="n">xaxis</span><span class="p">)</span>
+<span class="n">hist2</span> <span class="o">=</span> <span class="n">ewh_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">RUN</span><span class="p">,:]</span>
+<span class="n">plot_transient</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">hist2</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">plt_type</span> <span class="o">=</span> <span class="s1">&#39;-b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Captured EW histogram&quot;</span><span class="p">)</span>
+<span class="n">plot_transient</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">hist</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">plt_type</span> <span class="o">=</span> <span class="s1">&#39;--r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Timestamps histogram&quot;</span><span class="p">)</span>
+<span class="n">plot_transient</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">phi_bar</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">RUN</span><span class="p">,:]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">*</span><span class="n">spc1</span><span class="o">.</span><span class="n">N_output_ts</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">phi_bar</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)),</span> <span class="n">plt_type</span> <span class="o">=</span> <span class="s1">&#39;-g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True Transient&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Bins&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Histogram of raw data for $\Phi_</span><span class="si">{sig}</span><span class="s1">$ = </span><span class="si">%.2f</span><span class="s1">, $\Phi_</span><span class="si">{bkg}</span><span class="s1">$ = </span><span class="si">%.2f</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_sig&quot;</span><span class="p">][</span><span class="n">ROW</span><span class="p">,</span> <span class="n">RUN</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_bkg&quot;</span><span class="p">][</span><span class="n">ROW</span><span class="p">,</span> <span class="n">RUN</span><span class="p">]))</span>
+
+<span class="c1"># For fourth distance value and second run</span>
+<span class="n">ROW</span> <span class="o">=</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">get_row</span><span class="p">(</span><span class="n">sbr_idx</span> <span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dist_idx</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">RUN</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">hist</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">raw_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">RUN</span><span class="p">,:],</span> <span class="n">xaxis</span><span class="p">)</span>
+<span class="n">hist2</span> <span class="o">=</span> <span class="n">ewh_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">RUN</span><span class="p">,:]</span>
+<span class="n">plot_transient</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">hist2</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">plt_type</span> <span class="o">=</span> <span class="s1">&#39;-b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Captured EW histogram&quot;</span><span class="p">)</span>
+<span class="n">plot_transient</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">hist</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">plt_type</span> <span class="o">=</span> <span class="s1">&#39;--r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Timestamps histogram&quot;</span><span class="p">)</span>
+<span class="n">plot_transient</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">phi_bar</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">RUN</span><span class="p">,:]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">*</span><span class="n">spc1</span><span class="o">.</span><span class="n">N_output_ts</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">phi_bar</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)),</span> <span class="n">plt_type</span> <span class="o">=</span> <span class="s1">&#39;-g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True Transient&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Bins&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Histogram of raw data for $\Phi_</span><span class="si">{sig}</span><span class="s1">$ = </span><span class="si">%.2f</span><span class="s1">, $\Phi_</span><span class="si">{bkg}</span><span class="s1">$ = </span><span class="si">%.2f</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_sig&quot;</span><span class="p">][</span><span class="n">ROW</span><span class="p">,</span> <span class="n">RUN</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_bkg&quot;</span><span class="p">][</span><span class="n">ROW</span><span class="p">,</span> <span class="n">RUN</span><span class="p">]))</span>
+<span class="c1"># ax[3].set_ylim(0, N_output_ts*0.2*(PixLdr.sig_bkg_list[0][0] + PixLdr.sig_bkg_list[0][1]))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+raw_data torch.Size([5, 5, 500]) tensor(0.) tensor(998.5000)
+torch.Size([1001]) tensor([5.0000e-01, 1.5000e+00, 2.5000e+00,  ..., 9.9850e+02, 9.9950e+02,
+        1.0005e+03])
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_DToFSensors_6_1.png" src="../_images/notebooks_DToFSensors_6_1.png" />
+</div>
+</div>
+</section>
+<section id="Simulate-EWHSPC">
+<h2>Simulate EWHSPC<a class="headerlink" href="#Simulate-EWHSPC" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">BaseEWHSPC</span></code> class to simulate the conventional 3D SPCs that compress the photon timestamps into equi-width histograms. The overall pixel processing pipeline is called equi-width histogrammer (EWH).</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">SPCSim.sensors</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseEWHSPC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">SPCSim.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_transient</span><span class="p">,</span> <span class="n">plot_ewh</span>
+
+
+<span class="c1"># Simulating results for distance = 0.1*dmax</span>
+<span class="n">PixLdr</span> <span class="o">=</span> <span class="n">PerPixelLoader</span><span class="p">(</span><span class="n">min_dist</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span>
+                        <span class="n">tmax</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+                        <span class="n">sig_bkg_list</span> <span class="o">=</span> <span class="p">[</span>
+                            <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">]],</span>
+                        <span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+
+<span class="c1"># Generate the per pixel data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+
+
+<span class="c1"># Creating transient generator with laser time period of 100ns, FWHM 1 and with</span>
+<span class="c1"># laser time period divided into 1000 equal time-bins</span>
+<span class="n">tr_gen</span> <span class="o">=</span> <span class="n">TransientGenerator</span><span class="p">(</span><span class="n">N_tbins</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">tmax</span> <span class="o">=</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">tmax</span><span class="p">,</span> <span class="n">FWHM</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+
+
+<span class="c1"># Using the get function to generate the transient</span>
+<span class="c1"># for a given distance, albedo, intensity, and illumination condition</span>
+<span class="n">phi_bar</span> <span class="o">=</span> <span class="n">tr_gen</span><span class="o">.</span><span class="n">get_transient</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;gt_dist&quot;</span><span class="p">],</span>
+                               <span class="n">data</span><span class="p">[</span><span class="s2">&quot;albedo&quot;</span><span class="p">],</span>
+                               <span class="n">data</span><span class="p">[</span><span class="s2">&quot;albedo&quot;</span><span class="p">],</span>
+                               <span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_sig&quot;</span><span class="p">],</span>
+                               <span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_bkg&quot;</span><span class="p">])</span>
+
+
+<span class="c1"># Setting the dimensions, device, number of EWH bins per pixel</span>
+<span class="c1"># and number of laser pulses</span>
+
+<span class="n">Nr</span><span class="p">,</span> <span class="n">Nc</span><span class="p">,</span> <span class="n">N_tbins</span> <span class="o">=</span> <span class="n">phi_bar</span><span class="o">.</span><span class="n">shape</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">device</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">N_ewhbins</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">N_pulses</span> <span class="o">=</span> <span class="mi">500</span>
+
+<span class="n">spc1</span> <span class="o">=</span> <span class="n">BaseEWHSPC</span><span class="p">(</span>
+                <span class="n">Nr</span><span class="p">,</span>
+                <span class="n">Nc</span><span class="p">,</span>
+                <span class="n">N_pulses</span><span class="p">,</span>
+                <span class="n">device</span><span class="p">,</span>
+                <span class="n">N_tbins</span><span class="p">,</span>
+                <span class="n">N_ewhbins</span>
+               <span class="p">)</span>
+
+<span class="n">captured_data</span> <span class="o">=</span> <span class="n">spc1</span><span class="o">.</span><span class="n">capture</span><span class="p">(</span><span class="n">phi_bar</span><span class="p">)</span>
+<span class="n">ewh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;ewh&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="n">phi_bar</span> <span class="o">=</span> <span class="n">phi_bar</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+
+<span class="n">ewh_bins_axis</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">N_tbins</span><span class="o">-</span><span class="n">N_tbins</span><span class="o">//</span><span class="n">N_ewhbins</span><span class="p">,</span><span class="n">N_ewhbins</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">ROW</span><span class="p">,</span> <span class="n">COL</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">plot_ewh</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">ewh_bins_axis</span><span class="p">,</span> <span class="n">ewh_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span> <span class="n">COL</span><span class="p">,:],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;EWH histogram&quot;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">plot_transient</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">phi_bar</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span> <span class="n">COL</span><span class="p">,:]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">*</span><span class="n">spc1</span><span class="o">.</span><span class="n">N_pulses</span><span class="p">,</span> <span class="n">plt_type</span> <span class="o">=</span> <span class="s1">&#39;-r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;True Transient&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (a.u.)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Photon counts&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="c1"># fig.savefig(&quot;Temp.png&quot;)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 500/500 [00:00&lt;00:00, 5051.02it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x7d86a08875e0&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_DToFSensors_9_2.png" src="../_images/notebooks_DToFSensors_9_2.png" />
+</div>
+</div>
+</section>
+<section id="Simulate-basic-EDH-SPCs">
+<h2>Simulate basic EDH SPCs<a class="headerlink" href="#Simulate-basic-EDH-SPCs" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">BaseEDHSPC</span></code> class simulates the oracle equi-depth histogrammer (Oracle EDH). The oracle EDH has access to all the timestamps.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">SPCSim.sensors</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseEDHSPC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">SPCSim.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_transient</span><span class="p">,</span> <span class="n">plot_ewh</span><span class="p">,</span> <span class="n">plot_edh</span>
+
+
+<span class="c1"># Using the get function to generate the transient</span>
+<span class="c1"># for a given distance, albedo, intensity, and illumination condition</span>
+<span class="n">phi_bar</span> <span class="o">=</span> <span class="n">tr_gen</span><span class="o">.</span><span class="n">get_transient</span><span class="p">(</span>
+                                <span class="n">data</span><span class="p">[</span><span class="s2">&quot;gt_dist&quot;</span><span class="p">],</span>
+                                <span class="n">data</span><span class="p">[</span><span class="s2">&quot;albedo&quot;</span><span class="p">],</span>
+                                <span class="n">data</span><span class="p">[</span><span class="s2">&quot;albedo&quot;</span><span class="p">],</span>
+                                <span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_sig&quot;</span><span class="p">],</span>
+                                <span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_bkg&quot;</span><span class="p">])</span>
+
+
+<span class="c1"># Setting the dimensions, device, number of EWH bins per pixel</span>
+<span class="c1"># and number of laser pulses</span>
+
+<span class="n">Nr</span><span class="p">,</span> <span class="n">Nc</span><span class="p">,</span> <span class="n">N_tbins</span> <span class="o">=</span> <span class="n">phi_bar</span><span class="o">.</span><span class="n">shape</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">device</span>
+<span class="n">N_edhbins</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">N_pulses</span> <span class="o">=</span> <span class="mi">5000</span>
+
+<span class="n">spc1</span> <span class="o">=</span> <span class="n">BaseEDHSPC</span><span class="p">(</span><span class="n">Nr</span><span class="p">,</span>
+              <span class="n">Nc</span><span class="p">,</span>
+              <span class="n">N_pulses</span><span class="p">,</span>
+              <span class="n">device</span><span class="p">,</span>
+              <span class="n">N_tbins</span><span class="p">,</span>
+              <span class="n">N_edhbins</span><span class="p">)</span>
+
+<span class="n">captured_data</span> <span class="o">=</span> <span class="n">spc1</span><span class="o">.</span><span class="n">capture</span><span class="p">(</span><span class="n">phi_bar</span><span class="p">)</span>
+<span class="n">oedh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;oedh&quot;</span><span class="p">]</span>
+<span class="n">gtedh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;gtedh&quot;</span><span class="p">]</span>
+
+<span class="n">ewh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;ewh&quot;</span><span class="p">]</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="n">ROW</span><span class="p">,</span> <span class="n">COL</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">ymax</span> <span class="o">=</span> <span class="p">((</span><span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">ewh_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">,:])</span><span class="o">/</span><span class="n">N_edhbins</span><span class="p">))</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+<span class="n">plot_edh</span><span class="p">(</span><span class="n">oedh_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">,:],</span>
+         <span class="n">ax</span><span class="p">,</span>
+         <span class="n">ymax</span> <span class="o">=</span> <span class="n">ymax</span><span class="p">)</span>
+
+<span class="n">plot_edh</span><span class="p">(</span><span class="n">gtedh_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">,:],</span> <span class="n">ax</span><span class="p">,</span>
+         <span class="n">tr</span> <span class="o">=</span> <span class="n">phi_bar</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span> <span class="n">COL</span><span class="p">,:]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">*</span><span class="n">spc1</span><span class="o">.</span><span class="n">N_pulses</span><span class="p">,</span>
+        <span class="c1">#  crop_window= tr_gen.FWHM*1.5*tr_gen.N_tbins*1.0/tr_gen.tmax, # uncoment this line to zoom into peak</span>
+         <span class="n">ymax</span> <span class="o">=</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 5000/5000 [00:00&lt;00:00, 8819.14it/s]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_DToFSensors_11_1.png" src="../_images/notebooks_DToFSensors_11_1.png" />
+</div>
+</div>
+</section>
+<section id="Simulate-hierarchical-EDH-SPCs">
+<h2>Simulate hierarchical EDH SPCs<a class="headerlink" href="#Simulate-hierarchical-EDH-SPCs" title="Link to this heading"></a></h2>
+<p>The oracle EDH is not memory efficient. Hierarchical ED histogrammers (HEDH) <a class="reference external" href="https://ieeexplore.ieee.org/document/10210115">[1]</a> use binner circuits to iteratively update the estimates for ED histogram boundaries.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[68]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">SPCSim.sensors</span><span class="w"> </span><span class="kn">import</span> <span class="n">HEDHBaseClass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">SPCSim.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_transient</span><span class="p">,</span> <span class="n">plot_edh</span><span class="p">,</span> <span class="n">plot_edh_traj</span>
+
+
+<span class="n">phi_bar</span> <span class="o">=</span> <span class="n">tr_gen</span><span class="o">.</span><span class="n">get_transient</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;gt_dist&quot;</span><span class="p">],</span>
+                               <span class="n">data</span><span class="p">[</span><span class="s2">&quot;albedo&quot;</span><span class="p">],</span>
+                               <span class="n">data</span><span class="p">[</span><span class="s2">&quot;albedo&quot;</span><span class="p">],</span>
+                               <span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_sig&quot;</span><span class="p">],</span>
+                               <span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_bkg&quot;</span><span class="p">])</span>
+
+
+<span class="c1"># Setting the dimensions, device, number of EWH bins per pixel</span>
+<span class="c1"># and number of laser pulses</span>
+
+<span class="n">Nr</span><span class="p">,</span> <span class="n">Nc</span><span class="p">,</span> <span class="n">N_tbins</span> <span class="o">=</span> <span class="n">phi_bar</span><span class="o">.</span><span class="n">shape</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">device</span>
+<span class="n">N_edhbins</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">N_pulses</span> <span class="o">=</span> <span class="mi">3000</span>
+
+<span class="n">spc1</span> <span class="o">=</span> <span class="n">HEDHBaseClass</span><span class="p">(</span><span class="n">Nr</span><span class="p">,</span>
+              <span class="n">Nc</span><span class="p">,</span>
+              <span class="n">N_pulses</span><span class="p">,</span>
+              <span class="n">device</span><span class="p">,</span>
+              <span class="n">N_tbins</span><span class="p">,</span>
+              <span class="n">N_edhbins</span><span class="p">,</span>
+              <span class="n">step_params</span><span class="o">=</span><span class="p">{</span>
+                  <span class="s2">&quot;k&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span>
+                  <span class="s2">&quot;step_vals&quot;</span><span class="p">:[</span><span class="mi">1</span><span class="p">],</span>
+              <span class="p">})</span>
+
+<span class="n">captured_data</span> <span class="o">=</span> <span class="n">spc1</span><span class="o">.</span><span class="n">capture</span><span class="p">(</span><span class="n">phi_bar</span><span class="p">)</span>
+
+<span class="n">pedh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;edh&quot;</span><span class="p">]</span>
+<span class="n">gtedh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;gtedh&quot;</span><span class="p">]</span>
+<span class="n">ewh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;ewh&quot;</span><span class="p">]</span>
+<span class="n">edh_list</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;traj&quot;</span><span class="p">]</span>
+<span class="n">edh_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">edh_list</span><span class="p">)</span>
+
+<span class="n">ROW</span><span class="p">,</span> <span class="n">COL</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">ymax</span> <span class="o">=</span> <span class="p">((</span><span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">ewh_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">,:])</span><span class="o">/</span><span class="n">N_edhbins</span><span class="p">))</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">plot_edh</span><span class="p">(</span><span class="n">pedh_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">,:]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+         <span class="n">ax</span><span class="p">,</span>
+         <span class="n">ymax</span> <span class="o">=</span> <span class="n">ymax</span><span class="p">)</span>
+<span class="n">plot_edh</span><span class="p">(</span><span class="n">gtedh_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">,:]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">ax</span><span class="p">,</span>
+         <span class="n">tr</span> <span class="o">=</span> <span class="n">phi_bar</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span> <span class="n">COL</span><span class="p">,:]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">*</span><span class="n">spc1</span><span class="o">.</span><span class="n">N_pulses</span><span class="p">,</span>
+        <span class="c1">#  crop_window= tr_gen.FWHM*1.5*tr_gen.N_tbins*1.0/tr_gen.tmax,</span>
+         <span class="n">ymax</span> <span class="o">=</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Final EDH boundaries for $\Phi_</span><span class="si">{sig}</span><span class="s1">$ = </span><span class="si">%.2f</span><span class="s1">, $\Phi_</span><span class="si">{bkg}</span><span class="s1">$ = </span><span class="si">%.2f</span><span class="s1">, </span><span class="si">%d</span><span class="s1"> pulses&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_sig&quot;</span><span class="p">][</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_bkg&quot;</span><span class="p">][</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">],</span> <span class="n">spc1</span><span class="o">.</span><span class="n">N_pulses</span><span class="p">))</span>
+<span class="c1"># fig.savefig(&quot;Temp.png&quot;)</span>
+
+<span class="n">fig1</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">plot_edh_traj</span><span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">edh_list</span><span class="p">,</span> <span class="n">gtedh_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">ewh_data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;HEDH CV trajectories for $\Phi_</span><span class="si">{sig}</span><span class="s1">$ = </span><span class="si">%.2f</span><span class="s1">, $\Phi_</span><span class="si">{bkg}</span><span class="s1">$ = </span><span class="si">%.2f</span><span class="s1">, </span><span class="si">%d</span><span class="s1"> pulses&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_sig&quot;</span><span class="p">][</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_bkg&quot;</span><span class="p">][</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">],</span> <span class="n">spc1</span><span class="o">.</span><span class="n">N_pulses</span><span class="p">))</span>
+<span class="c1"># fig1.savefig(&quot;TempTraj.png&quot;)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+3000
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 3000/3000 [00:08&lt;00:00, 374.34it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(3000, 7)
+torch.Size([7])
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[68]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 1.0, &#39;HEDH CV trajectories for $\\Phi_{sig}$ = 0.50, $\\Phi_{bkg}$ = 2.50, 3000 pulses&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_DToFSensors_13_4.png" src="../_images/notebooks_DToFSensors_13_4.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_DToFSensors_13_5.png" src="../_images/notebooks_DToFSensors_13_5.png" />
+</div>
+</div>
+</section>
+<section id="Simulate-proportional-EDH-SPCs">
+<h2>Simulate proportional EDH SPCs<a class="headerlink" href="#Simulate-proportional-EDH-SPCs" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">PEDHBaseClass</span></code> simulates the proportional ED histogrammers <a class="reference external" href="https://link.springer.com/chapter/10.1007/978-3-031-73039-9_22">[2]</a>. PEDH uses a proportional binner circuit to track the ED histogram boundaries without storing the photon timestamps.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[69]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">SPCSim.sensors</span><span class="w"> </span><span class="kn">import</span> <span class="n">PEDHBaseClass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">SPCSim.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_transient</span><span class="p">,</span> <span class="n">plot_edh</span><span class="p">,</span> <span class="n">plot_edh_traj</span>
+
+<span class="c1"># Generate the per pixel data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+
+<span class="c1"># Creating transient generator with laser time period of 100ns, FWHM 1 and with</span>
+<span class="c1"># laser time period divided into 1000 equal time-bins</span>
+<span class="n">tr_gen</span> <span class="o">=</span> <span class="n">TransientGenerator</span><span class="p">(</span><span class="n">N_tbins</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">tmax</span> <span class="o">=</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">tmax</span><span class="p">,</span> <span class="n">FWHM</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+
+<span class="c1"># Using the get function to generate the transient</span>
+<span class="c1"># for a given distance, albedo, intensity, and illumination condition</span>
+<span class="n">phi_bar</span> <span class="o">=</span> <span class="n">tr_gen</span><span class="o">.</span><span class="n">get_transient</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;gt_dist&quot;</span><span class="p">],</span>
+                               <span class="n">data</span><span class="p">[</span><span class="s2">&quot;albedo&quot;</span><span class="p">],</span>
+                               <span class="n">data</span><span class="p">[</span><span class="s2">&quot;albedo&quot;</span><span class="p">],</span>
+                               <span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_sig&quot;</span><span class="p">],</span>
+                               <span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_bkg&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[70]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><br/><span></span><span class="c1"># Setting the dimensions, device, number of EWH bins per pixel</span>
+<span class="c1"># and number of laser pulses</span>
+<span class="n">Nr</span><span class="p">,</span> <span class="n">Nc</span><span class="p">,</span> <span class="n">N_tbins</span> <span class="o">=</span> <span class="n">phi_bar</span><span class="o">.</span><span class="n">shape</span>
+<span class="n">device</span> <span class="o">=</span> <span class="n">PixLdr</span><span class="o">.</span><span class="n">device</span>
+<span class="n">N_edhbins</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">N_pulses</span> <span class="o">=</span> <span class="mi">5000</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">N_pulses</span><span class="p">)</span>
+
+<span class="n">spc1</span> <span class="o">=</span> <span class="n">PEDHBaseClass</span><span class="p">(</span><span class="n">Nr</span><span class="p">,</span>
+              <span class="n">Nc</span><span class="p">,</span>
+              <span class="n">N_pulses</span><span class="p">,</span>
+              <span class="n">device</span><span class="p">,</span>
+              <span class="n">N_tbins</span><span class="p">,</span>
+              <span class="n">N_edhbins</span><span class="p">,</span>
+              <span class="n">step_params</span><span class="o">=</span><span class="p">{</span>
+                  <span class="s2">&quot;k&quot;</span><span class="p">:</span><span class="mi">1</span>
+              <span class="p">})</span>
+
+<span class="n">captured_data</span> <span class="o">=</span> <span class="n">spc1</span><span class="o">.</span><span class="n">capture</span><span class="p">(</span><span class="n">phi_bar</span><span class="p">)</span>
+
+<span class="n">pedh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;edh&quot;</span><span class="p">]</span>
+<span class="n">gtedh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;gtedh&quot;</span><span class="p">]</span>
+<span class="n">ewh_data</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;ewh&quot;</span><span class="p">]</span>
+<span class="n">edh_list</span> <span class="o">=</span> <span class="n">captured_data</span><span class="p">[</span><span class="s2">&quot;traj&quot;</span><span class="p">]</span>
+<span class="n">edh_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">edh_list</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+5000
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 5000/5000 [00:13&lt;00:00, 378.76it/s]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[71]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ROW</span><span class="p">,</span> <span class="n">COL</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">ymax</span> <span class="o">=</span> <span class="p">((</span><span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">ewh_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">,:])</span><span class="o">/</span><span class="n">N_edhbins</span><span class="p">))</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">plot_edh</span><span class="p">(</span><span class="n">pedh_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">,:],</span>
+         <span class="n">ax</span><span class="p">,</span>
+         <span class="n">tr</span> <span class="o">=</span> <span class="n">ewh_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span> <span class="n">COL</span><span class="p">,:]</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+         <span class="n">ymax</span> <span class="o">=</span> <span class="n">ymax</span><span class="p">)</span>
+<span class="n">plot_edh</span><span class="p">(</span><span class="n">gtedh_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">,:],</span> <span class="n">ax</span><span class="p">,</span>
+         <span class="n">tr</span> <span class="o">=</span> <span class="n">phi_bar</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span> <span class="n">COL</span><span class="p">,:]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">*</span><span class="n">spc1</span><span class="o">.</span><span class="n">N_pulses</span><span class="p">,</span>
+        <span class="c1">#  crop_window= tr_gen.FWHM*1.5*tr_gen.N_tbins*1.0/tr_gen.tmax,</span>
+         <span class="n">ymax</span> <span class="o">=</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Final EDH boundaries for $\Phi_</span><span class="si">{sig}</span><span class="s1">$ = </span><span class="si">%.2f</span><span class="s1">, $\Phi_</span><span class="si">{bkg}</span><span class="s1">$ = </span><span class="si">%.2f</span><span class="s1">, </span><span class="si">%d</span><span class="s1"> pulses&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_sig&quot;</span><span class="p">][</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_bkg&quot;</span><span class="p">][</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">],</span> <span class="n">spc1</span><span class="o">.</span><span class="n">N_pulses</span><span class="p">))</span>
+
+<span class="n">fig1</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plot_edh_traj</span><span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">edh_list</span><span class="p">,</span> <span class="n">gtedh_data</span><span class="p">[</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">ewh_data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,:]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;PEDH CV trajectories for $\Phi_</span><span class="si">{sig}</span><span class="s1">$ = </span><span class="si">%.2f</span><span class="s1">, $\Phi_</span><span class="si">{bkg}</span><span class="s1">$ = </span><span class="si">%.2f</span><span class="s1">, </span><span class="si">%d</span><span class="s1"> pulses&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_sig&quot;</span><span class="p">][</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;alpha_bkg&quot;</span><span class="p">][</span><span class="n">ROW</span><span class="p">,</span><span class="n">COL</span><span class="p">],</span> <span class="n">spc1</span><span class="o">.</span><span class="n">N_pulses</span><span class="p">))</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(5000, 15)
+torch.Size([15])
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[71]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5, 1.0, &#39;PEDH CV trajectories for $\\Phi_{sig}$ = 0.50, $\\Phi_{bkg}$ = 2.50, 5000 pulses&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_DToFSensors_17_2.png" src="../_images/notebooks_DToFSensors_17_2.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_DToFSensors_17_3.png" src="../_images/notebooks_DToFSensors_17_3.png" />
+</div>
+</div>
+<hr class="docutils" />
+<p>References **********</p>
+<p>[1] A. Ingle and D. Maier, “Count-Free Single-Photon 3D Imaging with Race Logic,” in IEEE Transactions on Pattern Analysis and Machine Intelligence, doi: 10.1109/TPAMI.2023.3302822,</p>
+<p>[2] Sadekar, K., Maier, D., &amp; Ingle, A. (2025). Single-Photon 3D Imaging with Equi-Depth Photon Histograms. In European Conference on Computer Vision (pp. 381-398). Springer, Cham.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="DataLoaders.html" class="btn btn-neutral float-left" title="Data loaders" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Custom3DSensingPipeline.html" class="btn btn-neutral float-right" title="Customized 3D imaging pipeline" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Kaustubh Sadekar, Atul Ingle, David Maier.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

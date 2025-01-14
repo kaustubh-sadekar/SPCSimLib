@@ -1,0 +1,268 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPCSim.postproc.edh_postproc &mdash; SPCSim 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            SPCSim
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Getting started</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/DataLoaders.html">Data loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/DToFSensors.html">Simulate dToF Sensors</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Advanced Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Custom3DSensingPipeline.html">Customized 3D imaging pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/TutorialCreateCustomEDH.html">Create custom equi-depth histogrammers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Research Paper Implementations:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/DeePEDH_ECCV24.html">Single-Photon 3D Imaging with Equi-Depth Photon Histograms (ECCV24)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">SPCSim API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">SPCSim</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">SPCSim.postproc.edh_postproc</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for SPCSim.postproc.edh_postproc</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+
+<div class="viewcode-block" id="PostProcEDH">
+<a class="viewcode-back" href="../../../SPCSim.postproc.html#SPCSim.postproc.edh_postproc.PostProcEDH">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PostProcEDH</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Class for post processing the EDH data for distance estimation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Nr</span><span class="p">,</span> <span class="n">Nc</span><span class="p">,</span> <span class="n">N_tbins</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Set up the indexing arrays and common tensors for the class</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            Nr (int): Number of rows</span>
+<span class="sd">            Nc (int): Number of columns</span>
+<span class="sd">            device (str): Device `cpu` or `gpu`</span>
+<span class="sd">            N_tbins (int): Number of time bins (frame)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">Nr</span> <span class="o">=</span> <span class="n">Nr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Nc</span> <span class="o">=</span> <span class="n">Nc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">N_tbins</span> <span class="o">=</span> <span class="n">N_tbins</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rr</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">cc</span>  <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Nr</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Nr</span><span class="p">),</span> 
+                                          <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Nc</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Nc</span><span class="p">),</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rr</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
+                                            <span class="n">dtype</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cc</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
+                                            <span class="n">dtype</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tmax</span> <span class="o">=</span> <span class="n">tmax</span>
+        
+
+<div class="viewcode-block" id="PostProcEDH.interp_nonuni_t">
+<a class="viewcode-back" href="../../../SPCSim.postproc.html#SPCSim.postproc.edh_postproc.PostProcEDH.interp_nonuni_t">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">interp_nonuni_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x1_</span><span class="p">,</span><span class="n">y1_</span><span class="p">,</span><span class="n">N</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;This function takes the x and y data values as 3D tensors and interpolates the y values along ``N`` equally spaced x values</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x1_ (torch.tensor): Location of the mid-points of ED histogram bins. Tensor shape (Nr, Nc, &lt;Num EDH bins&gt;)</span>
+<span class="sd">            y1_ (torch.tensor): Photon density estimate for each ED histogram bins (Inverse values of the ED histogram bin widths). Tensor shape (Nr, Nc, &lt;Num EDH bins&gt;)</span>
+<span class="sd">            N (int): Number of equally spaced time bins to interpolate the photon density estimates</span>
+<span class="sd">            mode (int, optional): Choose mode=0 for NN interpolation and mode = 1 for linear interpolation. Defaults to 1.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            x2 (torch.tensor): Location of the equally spaced interpolated mid-points of ED histogram bins. Tensor shape (Nr, Nc, N)</span>
+<span class="sd">            y2 (torch.tensor): Value of the the interpolated photon density estimates of ED histogram bins. Tensor shape (Nr, Nc, N)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">Nr</span><span class="p">,</span> <span class="n">Nc</span> <span class="o">=</span> <span class="n">x1_</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">x2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">N_tbins</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">((</span><span class="n">Nr</span><span class="p">,</span><span class="n">Nc</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        
+        <span class="n">y2</span> <span class="o">=</span> <span class="n">x2</span><span class="o">*</span><span class="mf">0.0</span>
+        <span class="n">y2</span><span class="p">[:,:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">y1_</span><span class="p">[:,:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+
+        <span class="k">if</span> <span class="n">mode</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x1_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">mask1_</span> <span class="o">=</span> <span class="n">x2</span><span class="o">&gt;=</span> <span class="n">x1_</span><span class="p">[:,:,</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x1_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">x1_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">mask3_</span> <span class="o">=</span> <span class="n">x2</span><span class="o">&lt;</span><span class="n">x1_</span><span class="p">[:,:,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x1_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">x1_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">mask_</span> <span class="o">=</span> <span class="n">mask1_</span><span class="o">*</span><span class="n">mask3_</span>
+                <span class="n">x_</span><span class="p">,</span><span class="n">y_</span><span class="p">,</span><span class="n">z_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">mask_</span><span class="p">,</span> <span class="n">as_tuple</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">y2</span><span class="p">[</span><span class="n">x_</span><span class="p">,</span><span class="n">y_</span><span class="p">,</span><span class="n">z_</span><span class="p">]</span> <span class="o">=</span> <span class="n">y1_</span><span class="p">[</span><span class="n">x_</span><span class="p">,</span><span class="n">y_</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">mode</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x1_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">mask1_</span> <span class="o">=</span> <span class="n">x2</span><span class="o">&gt;=</span> <span class="n">x1_</span><span class="p">[:,:,</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x1_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">x1_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">mask3_</span> <span class="o">=</span> <span class="n">x2</span><span class="o">&lt;</span><span class="n">x1_</span><span class="p">[:,:,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x1_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">x1_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">mask_</span> <span class="o">=</span> <span class="n">mask1_</span><span class="o">*</span><span class="n">mask3_</span>
+                <span class="n">x_</span><span class="p">,</span><span class="n">y_</span><span class="p">,</span><span class="n">z_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">mask_</span><span class="p">,</span> <span class="n">as_tuple</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">m_</span> <span class="o">=</span> <span class="p">(</span><span class="n">y1_</span><span class="p">[</span><span class="n">x_</span><span class="p">,</span><span class="n">y_</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">y1_</span><span class="p">[</span><span class="n">x_</span><span class="p">,</span><span class="n">y_</span><span class="p">,</span><span class="n">i</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">x1_</span><span class="p">[</span><span class="n">x_</span><span class="p">,</span><span class="n">y_</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x1_</span><span class="p">[</span><span class="n">x_</span><span class="p">,</span><span class="n">y_</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.00000000000001</span><span class="p">)</span>
+                <span class="n">y2</span><span class="p">[</span><span class="n">x_</span><span class="p">,</span><span class="n">y_</span><span class="p">,</span><span class="n">z_</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">m_</span><span class="o">*</span><span class="p">(</span><span class="n">x2</span><span class="p">[</span><span class="n">x_</span><span class="p">,</span><span class="n">y_</span><span class="p">,</span><span class="n">z_</span><span class="p">]</span> <span class="o">-</span> <span class="n">x1_</span><span class="p">[</span><span class="n">x_</span><span class="p">,</span><span class="n">y_</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">y1_</span><span class="p">[</span><span class="n">x_</span><span class="p">,</span><span class="n">y_</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Choose mode=0 for NN interpolation and mode = 1 for linear interpolation&quot;</span><span class="p">)</span>
+            <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">x2</span><span class="p">,</span><span class="n">y2</span></div>
+
+
+<div class="viewcode-block" id="PostProcEDH.edh2depth_t">
+<a class="viewcode-back" href="../../../SPCSim.postproc.html#SPCSim.postproc.edh_postproc.PostProcEDH.edh2depth_t">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">edh2depth_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eqbins_t</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot; This is the latest depth estimation method that includes three different depth estimation methods.</span>
+
+<span class="sd">        mode = 0: Rho_0 distance estimation after resampling to ``N_tbins`` number of equally spaced EDH values obtained using nearest neighbor interpolation.</span>
+<span class="sd">        mode = 1: Rho_1 distance estimation after resampling to ``N_tbins`` number of equally spaced EDH values obtained using  linear interpolation.</span>
+<span class="sd">        mode = 2: Naive distance estimation using narrowest bin of the EDH without any interpolation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># In case of using just a median tracking binner the median value is returned as the distance estimate for all the modes</span>
+        <span class="k">if</span> <span class="n">eqbins_t</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">depth_idx_</span> <span class="o">=</span> <span class="n">eqbins_t</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">tof_</span> <span class="o">=</span> <span class="p">(</span><span class="n">depth_idx_</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">N_tbins</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">tmax</span>
+            <span class="n">depth_</span> <span class="o">=</span> <span class="n">tof_</span><span class="o">*</span><span class="mf">3e8</span><span class="o">*</span><span class="mf">0.5</span><span class="o">*</span><span class="mf">1e-9</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">depth_idx_</span><span class="p">,</span> <span class="n">depth_</span>  
+
+        
+        <span class="n">e_</span><span class="o">=</span> <span class="p">(</span><span class="n">eqbins_t</span><span class="o">*</span><span class="mf">1.0</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+        
+        <span class="n">bin_w_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">e_</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">bin_w_inv_</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="p">(</span><span class="n">bin_w_</span><span class="o">+</span><span class="mf">0.0000000001</span><span class="p">)</span>
+        <span class="n">bin_idx_</span> <span class="o">=</span> <span class="p">(</span><span class="n">e_</span><span class="p">[:,:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">bin_w_</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
+
+        <span class="c1"># print(&quot;torch.zeros((self.Nr, self.Nc,1), device=self.device)&quot;,torch.zeros((self.Nr, self.Nc,1), device=self.device))</span>
+        <span class="c1"># print(&quot;bin_idx_&quot;, bin_idx_)</span>
+        <span class="c1"># print(&quot;torch.ones((self.Nr, self.Nc,1), device=self.device)*self.N_tbins)&quot;, torch.ones((self.Nr, self.Nc,1), device=self.device)*self.N_tbins)</span>
+        
+        <span class="n">bin_idx_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">Nr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nc</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">),</span> <span class="n">bin_idx_</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">Nr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nc</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">N_tbins</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">bin_w_inv_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">bin_w_inv_</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Nr</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Nc</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">bin_w_inv_</span><span class="p">,</span> <span class="n">bin_w_inv_</span><span class="p">[:,:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Nr</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">Nc</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">bin_idx_</span><span class="p">,</span> <span class="n">bin_w_inv_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interp_nonuni_t</span><span class="p">(</span><span class="n">bin_idx_</span><span class="p">,</span><span class="n">bin_w_inv_</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">N_tbins</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            
+            <span class="n">idx_temp_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">bin_w_inv_</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+            <span class="n">depth_idx_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">bin_idx_</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">rr</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span><span class="bp">self</span><span class="o">.</span><span class="n">cc</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span><span class="n">idx_temp_</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rr</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span><span class="bp">self</span><span class="o">.</span><span class="n">cc</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()]])</span>
+            
+            <span class="n">tof_</span> <span class="o">=</span> <span class="p">(</span><span class="n">depth_idx_</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">N_tbins</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">tmax</span>
+
+            <span class="n">depth_</span> <span class="o">=</span> <span class="n">tof_</span><span class="o">*</span><span class="mf">3e8</span><span class="o">*</span><span class="mf">0.5</span><span class="o">*</span><span class="mf">1e-9</span>
+            
+        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">bin_idx_</span><span class="p">,</span> <span class="n">bin_w_inv_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interp_nonuni_t</span><span class="p">(</span><span class="n">bin_idx_</span><span class="p">,</span><span class="n">bin_w_inv_</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">N_tbins</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            
+            <span class="n">idx_temp_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">bin_w_inv_</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+            <span class="n">depth_idx_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">bin_idx_</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">rr</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span><span class="bp">self</span><span class="o">.</span><span class="n">cc</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span><span class="n">idx_temp_</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rr</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span><span class="bp">self</span><span class="o">.</span><span class="n">cc</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()]])</span>
+            
+            <span class="n">tof_</span> <span class="o">=</span> <span class="p">(</span><span class="n">depth_idx_</span><span class="o">*</span><span class="mf">1.0</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">N_tbins</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">tmax</span>
+
+            <span class="n">depth_</span> <span class="o">=</span> <span class="n">tof_</span><span class="o">*</span><span class="mf">3e8</span><span class="o">*</span><span class="mf">0.5</span><span class="o">*</span><span class="mf">1e-9</span>
+        
+        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span><span class="mi">2</span><span class="p">:</span>
+            <span class="n">idx_temp_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">bin_w_inv_</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">depth_idx_</span> <span class="o">=</span> <span class="n">bin_idx_</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rr</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">cc</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+                                  <span class="n">idx_temp_</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rr</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">cc</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()]</span>
+            <span class="n">tof_</span> <span class="o">=</span> <span class="p">(</span><span class="n">depth_idx_</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">N_tbins</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">tmax</span><span class="o">*</span><span class="mf">1e-9</span>
+            <span class="n">depth_</span> <span class="o">=</span> <span class="n">tof_</span><span class="o">*</span><span class="mf">3e8</span><span class="o">*</span><span class="mf">0.5</span>
+            
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Incorrect mode selected!! choose 0 or 1&quot;</span><span class="p">)</span>
+            <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+
+        <span class="k">return</span> <span class="n">bin_w_inv_</span><span class="p">,</span> <span class="n">bin_idx_</span><span class="p">,</span> <span class="n">depth_idx_</span><span class="p">,</span> <span class="n">depth_</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Kaustubh Sadekar, Atul Ingle, David Maier.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
