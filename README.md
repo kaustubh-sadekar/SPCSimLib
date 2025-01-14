@@ -67,6 +67,7 @@ pip install .
 # Acknowledgements
 
 This work was supported in part by NSF ECCS-2138471.
+
 <img src="https://upload.wikimedia.org/wikipedia/commons/1/11/NSF_Official_logo_Med_Res.png"
      alt="NSF logo"
-     style="float: left; margin-right: 10px;"/>
+     style="height: 150px; width: 150px"/>
