@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="250" src="images/logo.png">
+</p>
+
 # SPCSim: A Fast, Efficient, and Modular Single-Photon Camera Simulator 
 
 SPCSim (Single-Photon Camera Simulator) is a PyTorch-based library for simulating 3D imaging systems using single-photon cameras (SPCs). 
