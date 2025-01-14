@@ -54,7 +54,8 @@ isbn="978-3-031-73039-9"
 1. Create a new virtual environment and install the required libraries
 
 ```
-
+git-clone https://github.com/kaustubh-sadekar/SPCSimLib.git
+cd SPCSimLib/
 conda create -n "spcsim_env" python=3.9.12
 conda activate spcsim_env
 pip install -r requirements.txt
