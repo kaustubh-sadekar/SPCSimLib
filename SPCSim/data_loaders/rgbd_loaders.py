@@ -51,7 +51,7 @@ class RGBDLoader:
     r"""Method to load the distance image
     """
 
-    dist_img = cv2.resize(cv2.imread(dist_pth,-1)[self.crop_r1:self.crop_r2, self.crop_c1:self.crop_c2],(self.Nr, self.Nc))
+    dist_img = self.dist_preproc(cv2.resize(cv2.imread(dist_pth,-1)[self.crop_r1:self.crop_r2, self.crop_c1:self.crop_c2],(self.Nr, self.Nc)))
     return torch.tensor(dist_img).to(self.device)
   
   def load_rgb(self, rgb_pth):
@@ -60,19 +60,19 @@ class RGBDLoader:
     .. note:: The color channels are flipped as cv2.imread reads bgr image instead of rgb
     
     """
-    rgb_img = cv2.resize(cv2.imread(rgb_pth,1)[self.crop_r1:self.crop_r2, self.crop_c1:self.crop_c2,::-1],(self.Nr, self.Nc))
+    rgb_img = self.rgb_preproc(cv2.resize(cv2.imread(rgb_pth,1)[self.crop_r1:self.crop_r2, self.crop_c1:self.crop_c2,::-1],(self.Nr, self.Nc)))
     return torch.tensor(rgb_img).to(self.device)
 
   def load_albedo(self, albedo_pth, read_mode=0):
     r"""Method to load the albedo image 
     """
-    albedo = cv2.resize(cv2.imread(albedo_pth,read_mode)[self.crop_r1:self.crop_r2, self.crop_c1:self.crop_c2],(self.Nr, self.Nc))
+    albedo = self.albedo_preproc(cv2.resize(cv2.imread(albedo_pth,read_mode)[self.crop_r1:self.crop_r2, self.crop_c1:self.crop_c2],(self.Nr, self.Nc)))
     return torch.tensor(albedo).to(self.device)
   
   def load_intensity(self, intensity_pth, read_mode=0):
     r"""Method to load the intensity image 
     """
-    intensity = cv2.resize(cv2.imread(intensity_pth,read_mode)[self.crop_r1:self.crop_r2, self.crop_c1:self.crop_c2],(self.Nr, self.Nc))
+    intensity = self.intensity_preproc(cv2.resize(cv2.imread(intensity_pth,read_mode)[self.crop_r1:self.crop_r2, self.crop_c1:self.crop_c2],(self.Nr, self.Nc)))
     return torch.tensor(intensity).to(self.device)
   
   def rgb_preproc(self, rgb):
@@ -108,18 +108,18 @@ class RGBDLoader:
         data (dictionary): Dictionary containing the rgb, intensity, albedo and distance image
     """
     
-    rgb = self.rgb_preproc(self.load_rgb(rgb_pth))
-    dist = self.dist_preproc(self.load_dist(dist_pth))
+    rgb = self.load_rgb(rgb_pth)
+    dist = self.load_dist(dist_pth)
 
     if albedo_pth == "":
-      albedo = self.albedo_preproc(self.load_albedo(rgb_pth))
+      albedo = self.load_albedo(rgb_pth)
     else:
-      albedo = self.albedo_preproc(self.load_albedo(albedo_pth))
+      albedo = self.load_albedo(albedo_pth)
 
     if intensity_pth == "":
-      intensity = self.intensity_preproc(self.load_intensity(rgb_pth))
+      intensity = self.load_intensity(rgb_pth)
     else:
-      intensity = self.intensity_preproc(self.load_intensity(intensity_pth))
+      intensity = self.load_intensity(intensity_pth)
     
     data = {
         'rgb':rgb.to(self.device),
