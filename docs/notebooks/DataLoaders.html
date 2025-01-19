@@ -113,7 +113,7 @@
 <li><p>Access an RGB-D frame using the <code class="docutils literal notranslate"><span class="pre">get_data</span></code> method</p></li>
 </ul>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
@@ -121,8 +121,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">SPCSim.data_loaders.rgbd_loaders</span><span class="w"> </span><span class="kn">import</span> <span class="n">NYULoader1</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">SPCSim.utils.plot_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_rgbd</span>
 
-<span class="n">csv_file_name</span> <span class="o">=</span> <span class="s2">&quot;/content/drive/MyDrive/research/PEDH/nyu_data/data/nyu2_train.csv&quot;</span>
-<span class="n">root</span> <span class="o">=</span> <span class="s2">&quot;/content/drive/MyDrive/research/PEDH/nyu_data/&quot;</span>
+<span class="n">csv_file_name</span> <span class="o">=</span> <span class="s2">&quot;nyu_data/data/nyu2_train.csv&quot;</span>
+<span class="n">root</span> <span class="o">=</span> <span class="s2">&quot;nyu_data/&quot;</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csv_file_name</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
 <span class="c1"># Set the image resolution for the RGB-D frames</span>
