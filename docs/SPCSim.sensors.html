@@ -114,8 +114,8 @@
 </section>
 <section id="module-SPCSim.sensors.dtof">
 <span id="spcsim-sensors-dtof-module"></span><h2>SPCSim.sensors.dtof module<a class="headerlink" href="#module-SPCSim.sensors.dtof" title="Link to this heading"></a></h2>
-<section id="sensors-module">
-<h3>Sensors Module<a class="headerlink" href="#sensors-module" title="Link to this heading"></a></h3>
+<section id="dtof-sensors-module">
+<h3>DToF Sensors Module<a class="headerlink" href="#dtof-sensors-module" title="Link to this heading"></a></h3>
 </section>
 <dl class="py class">
 <dt class="sig sig-object py" id="SPCSim.sensors.dtof.BaseDtofSPC">
@@ -150,8 +150,10 @@ once the per bin probability of detecting a photon increases above 1 or 1.3, alm
 always a vector of all ones. Hence increasing the total photon flux above 1.3 photons per bin results in the same values of <cite>hist</cite> no mater how
 high the flux is. This is important to note when performing experiments for high-photon flux scenarios. It is also important to note that the current
 version of this method does not consider the effect of dead time hence you do not see the distortions you may expect to see in high-photon flux regime
-(as you deviate away from the 5% flux rule [3] the simulated data will not match with the real sensor data as the dead time distortion is not modeled)</p>
+(as you deviate away from the 5% flux rule [1] the simulated data will not match with the real sensor data as the dead time distortion is not modeled)</p>
 </div>
+<p><strong>Reference</strong></p>
+<p>[1] O’Connor, D.V.O., Phillips, D., “Time-correlated Single Photon Counting”, Academic Press, London, 1984</p>
 </dd></dl>
 
 </dd></dl>
@@ -364,7 +366,7 @@ compute the delta (late photons - early photons)/total photons, computer the upd
 <dt class="sig sig-object py" id="SPCSim.sensors.dtof.HEDHBaseClass.update_pa_pb_kp">
 <span class="sig-name descname"><span class="pre">update_pa_pb_kp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ts</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#HEDHBaseClass.update_pa_pb_kp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.HEDHBaseClass.update_pa_pb_kp" title="Link to this definition"></a></dt>
 <dd><p>Method to compute the early and late photon streams for current control value of each binner in a vectorized form.</p>
-<p>Refer the following figure from [1] to understand how the binner hardware splits the photon stream into early and late photons.</p>
+<p>Refer the following figure from [2] to understand how the binner hardware splits the photon stream into early and late photons.</p>
 <img alt="https://static.wixstatic.com/media/bcd6ad_c4fbe0e7d57b47beafac0b091f502e97~mv2.png/v1/fill/w_600,h_491,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/bcd6ad_c4fbe0e7d57b47beafac0b091f502e97~mv2.png" src="https://static.wixstatic.com/media/bcd6ad_c4fbe0e7d57b47beafac0b091f502e97~mv2.png/v1/fill/w_600,h_491,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/bcd6ad_c4fbe0e7d57b47beafac0b091f502e97~mv2.png" />
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -374,6 +376,8 @@ compute the delta (late photons - early photons)/total photons, computer the upd
 </ul>
 </dd>
 </dl>
+<p><strong>References</strong></p>
+<p>[2] A. Ingle and D. Maier, “Count-Free Single-Photon 3D Imaging with Race Logic,” in IEEE Transactions on Pattern Analysis and Machine Intelligence, doi: 10.1109/TPAMI.2023.3302822.</p>
 </dd></dl>
 
 </dd></dl>
@@ -438,8 +442,10 @@ A simple example of could be to overwrite this method with the following definit
 <dd><p>Method to update the difference between early photons (<code class="docutils literal notranslate"><span class="pre">pe</span></code>) and late photons (<code class="docutils literal notranslate"><span class="pre">pl</span></code>).
 The <cite>delta</cite> value is used to compute the binner update step. For proportional binners early and
 late photons are multiplied by respective quantile fractions for proportional stepping explained in
-[2].</p>
+[3].</p>
 <p>For a basic proportional binner delta is used to compute the binner update step as <code class="docutils literal notranslate"><span class="pre">step[n+1]</span> <span class="pre">=</span> <span class="pre">delta[n]</span></code>.</p>
+<p><strong>References</strong></p>
+<p>[3] Sadekar, K., Maier, D., &amp; Ingle, A. (2025). Single-Photon 3D Imaging with Equi-Depth Photon Histograms. In European Conference on Computer Vision (pp. 381-398). Springer, Cham.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -475,7 +481,7 @@ compute the delta (late photons - early photons)/total photons, computer the upd
 <dl class="py method">
 <dt class="sig sig-object py" id="SPCSim.sensors.dtof.PEDHOptimized.set_decay_schedule">
 <span class="sig-name descname"><span class="pre">set_decay_schedule</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/SPCSim/sensors/dtof.html#PEDHOptimized.set_decay_schedule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#SPCSim.sensors.dtof.PEDHOptimized.set_decay_schedule" title="Link to this definition"></a></dt>
-<dd><p>Method to generate improved decay schedule based on the optimized stepping strategy [2].</p>
+<dd><p>Method to generate improved decay schedule based on the optimized stepping strategy [3].</p>
 </dd></dl>
 
 <dl class="py method">
