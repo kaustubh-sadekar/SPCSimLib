@@ -1,7 +1,7 @@
 """
-##############
-Sensors Module
-##############
+###################
+DToF Sensors Module
+###################
 
 
 """
@@ -54,6 +54,11 @@ class BaseDtofSPC:
           high the flux is. This is important to note when performing experiments for high-photon flux scenarios. It is also important to note that the current
           version of this method does not consider the effect of dead time hence you do not see the distortions you may expect to see in high-photon flux regime 
           (as you deviate away from the 5% flux rule [3] the simulated data will not match with the real sensor data as the dead time distortion is not modeled)
+    
+          
+    **Reference**
+
+    [3] O’Connor, D.V.O., Phillips, D., “Time-correlated Single Photon Counting”, Academic Press, London, 1984
     
     """
     hist = torch.poisson(phi_bar) # This line does not perform sum normalization before passing phi_bar to torch.poisson sampling.
@@ -460,6 +465,11 @@ class HEDHBaseClass(BaseEDHSPC):
     Args:
         hist (torch.tensor): Input one-hot encoded photon detection cube.
         ts (torch.tensor): Time stamp tensor of the same size as hist. ts[n,m,k] = k if hist[n,m,k] = 1 else =0
+
+    **References**
+    
+    [1] A. Ingle and D. Maier, "Count-Free Single-Photon 3D Imaging with Race Logic," in IEEE Transactions on Pattern Analysis and Machine Intelligence, doi: 10.1109/TPAMI.2023.3302822.
+
     """
 
     # time stamps
@@ -742,6 +752,13 @@ class PEDHBaseClass(BaseEDHSPC):
     [2].
     
     For a basic proportional binner delta is used to compute the binner update step as ``step[n+1] = delta[n]``. 
+
+    **References**
+
+
+    [2] Sadekar, K., Maier, D., & Ingle, A. (2025). Single-Photon 3D Imaging with Equi-Depth Photon Histograms. In European Conference on Computer Vision (pp. 381-398). Springer, Cham.
+
+
     """
 
     self.delta = (self.a*self.pl - self.b*self.pe).to(self.device)
@@ -947,18 +964,3 @@ class PEDHOptimized(PEDHBaseClass):
     self.cy_cnt+=1
 
     return self.e1 
-
-
-"""
-**********
-References
-**********
-
-[1] A. Ingle and D. Maier, "Count-Free Single-Photon 3D Imaging with Race Logic," in IEEE Transactions on Pattern Analysis and Machine Intelligence, doi: 10.1109/TPAMI.2023.3302822.
-keywords: {Histograms;Photonics;Cameras;Three-dimensional displays;Sensors;Laser pulses;Bandwidth;Computational Photography;3D Sensing;SPAD LiDAR;Race Logic},
-
-[2] Sadekar, K., Maier, D., & Ingle, A. (2025). Single-Photon 3D Imaging with Equi-Depth Photon Histograms. In European Conference on Computer Vision (pp. 381-398). Springer, Cham.
-
-
-[3] O’Connor, D.V.O., Phillips, D., “Time-correlated Single Photon Counting”, Academic Press, London, 1984
-"""
