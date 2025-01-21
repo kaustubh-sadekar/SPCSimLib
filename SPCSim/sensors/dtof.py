@@ -1,10 +1,3 @@
-"""
-###################
-DToF Sensors Module
-###################
-
-
-"""
 import torch
 import numpy as np
 from tqdm import tqdm
@@ -53,12 +46,12 @@ class BaseDtofSPC:
           always a vector of all ones. Hence increasing the total photon flux above 1.3 photons per bin results in the same values of `hist` no mater how
           high the flux is. This is important to note when performing experiments for high-photon flux scenarios. It is also important to note that the current
           version of this method does not consider the effect of dead time hence you do not see the distortions you may expect to see in high-photon flux regime 
-          (as you deviate away from the 5% flux rule [3] the simulated data will not match with the real sensor data as the dead time distortion is not modeled)
+          (as you deviate away from the 5% flux rule [1] the simulated data will not match with the real sensor data as the dead time distortion is not modeled)
     
           
     **Reference**
 
-    [3] O’Connor, D.V.O., Phillips, D., “Time-correlated Single Photon Counting”, Academic Press, London, 1984
+    [1] O’Connor, D.V.O., Phillips, D., “Time-correlated Single Photon Counting”, Academic Press, London, 1984
     
     """
     hist = torch.poisson(phi_bar) # This line does not perform sum normalization before passing phi_bar to torch.poisson sampling.
@@ -457,7 +450,7 @@ class HEDHBaseClass(BaseEDHSPC):
   def update_pa_pb_kp(self, hist, ts):
     r"""Method to compute the early and late photon streams for current control value of each binner in a vectorized form.
 
-    Refer the following figure from [1] to understand how the binner hardware splits the photon stream into early and late photons.
+    Refer the following figure from [2] to understand how the binner hardware splits the photon stream into early and late photons.
 
     .. image:: https://static.wixstatic.com/media/bcd6ad_c4fbe0e7d57b47beafac0b091f502e97~mv2.png/v1/fill/w_600,h_491,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/bcd6ad_c4fbe0e7d57b47beafac0b091f502e97~mv2.png
     
@@ -468,7 +461,7 @@ class HEDHBaseClass(BaseEDHSPC):
 
     **References**
     
-    [1] A. Ingle and D. Maier, "Count-Free Single-Photon 3D Imaging with Race Logic," in IEEE Transactions on Pattern Analysis and Machine Intelligence, doi: 10.1109/TPAMI.2023.3302822.
+    [2] A. Ingle and D. Maier, "Count-Free Single-Photon 3D Imaging with Race Logic," in IEEE Transactions on Pattern Analysis and Machine Intelligence, doi: 10.1109/TPAMI.2023.3302822.
 
     """
 
@@ -749,14 +742,14 @@ class PEDHBaseClass(BaseEDHSPC):
     r"""Method to update the difference between early photons (``pe``) and late photons (``pl``). 
     The `delta` value is used to compute the binner update step. For proportional binners early and 
     late photons are multiplied by respective quantile fractions for proportional stepping explained in 
-    [2].
+    [3].
     
     For a basic proportional binner delta is used to compute the binner update step as ``step[n+1] = delta[n]``. 
 
     **References**
 
 
-    [2] Sadekar, K., Maier, D., & Ingle, A. (2025). Single-Photon 3D Imaging with Equi-Depth Photon Histograms. In European Conference on Computer Vision (pp. 381-398). Springer, Cham.
+    [3] Sadekar, K., Maier, D., & Ingle, A. (2025). Single-Photon 3D Imaging with Equi-Depth Photon Histograms. In European Conference on Computer Vision (pp. 381-398). Springer, Cham.
 
 
     """
@@ -923,7 +916,7 @@ class PEDHOptimized(PEDHBaseClass):
     
     
   def set_decay_schedule(self):
-    r""" Method to generate improved decay schedule based on the optimized stepping strategy [2].
+    r""" Method to generate improved decay schedule based on the optimized stepping strategy [3].
     """
     if not (self.decay):
         self.decay = self.min_clip**(1/(self.N_pulses*self.switch_fraction))
