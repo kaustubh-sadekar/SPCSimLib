@@ -45,10 +45,10 @@ class BaseDtofSPC:
                                         dtype = torch.long)
     
   def sim_poisson_process(self, phi_bar):    
-    r""" Method to simulate detected photons from average incident photon flux.
+    r""" Method to simulate arriving photons from average incident photon flux.
 
-     .. note:: The sim_poisson_process method of BaseDtofSPC takes input as phi_bar (the average probability of incident photons in each bin) and 
-          applies the following operation ``hist = torch.poisson(phi_bar).to(device = self.device, dtype = torch.bool)*1``. It is important to note that  
+    .. note:: The sim_poisson_process method of BaseDtofSPC takes input as phi_bar (the average probability of incident photons in each bin) and 
+          applies the following operation ``hist = torch.poisson(phi_bar).to(device = self.device, dtype = torch.bool)*1``. It is important to note that the 
           once the per bin probability of detecting a photon increases above 1 or 1.3, almost all bins detect a photon hence the output vector `hist` is
           always a vector of all ones. Hence increasing the total photon flux above 1.3 photons per bin results in the same values of `hist` no mater how
           high the flux is. This is important to note when performing experiments for high-photon flux scenarios. It is also important to note that the current
