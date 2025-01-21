@@ -958,4 +958,7 @@ References
 keywords: {Histograms;Photonics;Cameras;Three-dimensional displays;Sensors;Laser pulses;Bandwidth;Computational Photography;3D Sensing;SPAD LiDAR;Race Logic},
 
 [2] Sadekar, K., Maier, D., & Ingle, A. (2025). Single-Photon 3D Imaging with Equi-Depth Photon Histograms. In European Conference on Computer Vision (pp. 381-398). Springer, Cham.
+
+
+[3] O’Connor, D.V.O., Phillips, D., “Time-correlated Single Photon Counting”, Academic Press, London, 1984
 """
