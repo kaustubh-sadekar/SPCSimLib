@@ -51,7 +51,7 @@ class RGBDLoader:
     r"""Method to load the distance image
     """
 
-    dist_img = self.dist_preproc(cv2.resize(cv2.imread(dist_pth,-1)[self.crop_r1:self.crop_r2, self.crop_c1:self.crop_c2],(self.Nr, self.Nc)))
+    dist_img = self.dist_preproc(cv2.resize(cv2.imread(dist_pth,-1)[self.crop_r1:self.crop_r2, self.crop_c1:self.crop_c2],(self.Nc, self.Nr)))
     return torch.tensor(dist_img).to(self.device)
   
   def load_rgb(self, rgb_pth):
@@ -60,19 +60,19 @@ class RGBDLoader:
     .. note:: The color channels are flipped as cv2.imread reads bgr image instead of rgb
     
     """
-    rgb_img = self.rgb_preproc(cv2.resize(cv2.imread(rgb_pth,1)[self.crop_r1:self.crop_r2, self.crop_c1:self.crop_c2,::-1],(self.Nr, self.Nc)))
+    rgb_img = self.rgb_preproc(cv2.resize(cv2.imread(rgb_pth,1)[self.crop_r1:self.crop_r2, self.crop_c1:self.crop_c2,::-1],(self.Nc, self.Nr)))
     return torch.tensor(rgb_img).to(self.device)
 
   def load_albedo(self, albedo_pth, read_mode=0):
     r"""Method to load the albedo image 
     """
-    albedo = self.albedo_preproc(cv2.resize(cv2.imread(albedo_pth,read_mode)[self.crop_r1:self.crop_r2, self.crop_c1:self.crop_c2],(self.Nr, self.Nc)))
+    albedo = self.albedo_preproc(cv2.resize(cv2.imread(albedo_pth,read_mode)[self.crop_r1:self.crop_r2, self.crop_c1:self.crop_c2],(self.Nc, self.Nr)))
     return torch.tensor(albedo).to(self.device)
   
   def load_intensity(self, intensity_pth, read_mode=0):
     r"""Method to load the intensity image 
     """
-    intensity = self.intensity_preproc(cv2.resize(cv2.imread(intensity_pth,read_mode)[self.crop_r1:self.crop_r2, self.crop_c1:self.crop_c2],(self.Nr, self.Nc)))
+    intensity = self.intensity_preproc(cv2.resize(cv2.imread(intensity_pth,read_mode)[self.crop_r1:self.crop_r2, self.crop_c1:self.crop_c2],(self.Nc, self.Nr)))
     return torch.tensor(intensity).to(self.device)
   
   def rgb_preproc(self, rgb):
