@@ -235,7 +235,7 @@ class BaseEDHSPC(BaseDtofSPC):
   .. note:: The term `depth` in equi-depth histograms refers to the count/height of the bin indicating that ED histogram bins have equal height. The term
             `depth` is not supposed to be confused with the scene depth. Hence in the code `distance` is used instead of `depth` to indicate how far objects are in the scene.
   """
-  def __init__(self,Nr, Nc, N_pulses, device, N_tbins, N_edhbins, seed=0):
+  def __init__(self,Nr, Nc, N_pulses, device, N_tbins, N_edhbins, fast_sim = True, seed=0):
     r"""
     Args:
         Nr (int): Number of rows
@@ -244,10 +244,12 @@ class BaseEDHSPC(BaseDtofSPC):
         device (int): Device `cpu` or `gpu`
         N_tbins (int): Number of time bins (frame)
         N_edhbins (int): Number of equi-depth histogram bins.
+        fast_sim (int): Avoid simulating on a per cycle basis (default true)
     """
 
     BaseDtofSPC.__init__(self,Nr, Nc, N_pulses, device, N_tbins, seed=seed)
     self.N_edhbins = N_edhbins
+    self.fast_sim = fast_sim
   
   def get_ts_from_hist(self, hist):
     r"""Method to convert one-hot encoded photon detection vectors to photon time stamp vectors
@@ -314,8 +316,15 @@ class BaseEDHSPC(BaseDtofSPC):
     hist = 0
     # NOTE: This step can be optimized by computing poisson process measurements for phi_bar*N_pulses instead of for loop
     # But the for loop will enable additional features in future versions.
-    for cycles in tqdm(range(self.N_pulses)):
-      hist += self.sim_poisson_process(phi_bar)
+    # for cycles in tqdm(range(self.N_pulses)):
+    #   hist += self.sim_poisson_process(phi_bar)
+    if not(self.fast_sim):
+      # NOTE: This step can be optimized by computing poisson process measurements for phi_bar*N_pulses instead of for loop
+      for cycles in tqdm(range(self.N_pulses)):
+        hist += self.sim_poisson_process(phi_bar) 
+    else:
+        hist = self.sim_poisson_process_multicycle(phi_bar*self.N_pulses)
+
     
     oedh_bins = self.ewh2edh(hist)
     oedh_bins = self.add_extreme_boundaries(oedh_bins)
