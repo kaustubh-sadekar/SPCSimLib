@@ -64,6 +64,30 @@ class BaseDtofSPC:
     
     return (self.ts_vec[:,:,self.N_tbins:]*1).to(device = self.device,
                     dtype = torch.bool)*1
+  
+  def sim_poisson_process_multicycle(self, phi_bar):    
+    r""" Method to simulate arriving photons from average incident photon flux.
+
+    .. note:: The sim_poisson_process method of BaseDtofSPC takes input as phi_bar (the average probability of incident photons in each bin) and 
+          applies the following operation ``hist = torch.poisson(phi_bar).to(device = self.device, dtype = torch.bool)*1``. It is important to note that the 
+          once the per bin probability of detecting a photon increases above 1 or 1.3, almost all bins detect a photon hence the output vector `hist` is
+          always a vector of all ones. Hence increasing the total photon flux above 1.3 photons per bin results in the same values of `hist` no mater how
+          high the flux is. This is important to note when performing experiments for high-photon flux scenarios. It is also important to note that the current
+          version of this method does not consider the effect of dead time hence you do not see the distortions you may expect to see in high-photon flux regime 
+          (as you deviate away from the 5% flux rule [1] the simulated data will not match with the real sensor data as the dead time distortion is not modeled)
+    
+          
+    **Reference**
+
+    [1] O’Connor, D.V.O., Phillips, D., “Time-correlated Single Photon Counting”, Academic Press, London, 1984
+    
+    """
+    hist = torch.poisson(phi_bar) # This line does not perform sum normalization before passing phi_bar to torch.poisson sampling.
+      # Performing a sum normalization ensures the total probability = 1 but we deal with per bin probabilities.
+
+    hist = hist.to(device = self.device)*1
+    
+    return hist
 
   def capture(self, phi_bar):
     r"""Method needs to be implemented for inheriting class
@@ -150,7 +174,7 @@ class BaseEWHSPC(BaseDtofSPC):
   incident in respective bin. In idea scenarios the bin with highest counts is most likely to contain the signal peak.
 
   """
-  def __init__(self,Nr, Nc, N_pulses, device, N_tbins, N_ewhbins, seed=0):
+  def __init__(self,Nr, Nc, N_pulses, device, N_tbins, N_ewhbins, fast_sim = True, seed=0):
     BaseDtofSPC.__init__(self,Nr, Nc, N_pulses, device, N_tbins, seed=seed)
     r"""
     Args:
@@ -160,8 +184,12 @@ class BaseEWHSPC(BaseDtofSPC):
         device (int): Device `cpu` or `gpu`
         N_tbins (int): Number of time bins (frame)
         N_ewhbins (int): Number of equi-width histogram bins.
+        fast_sim (int): Avoid simulating on a per cycle basis (default true)
     """
     self.N_ewhbins = N_ewhbins
+    self.factor = self.N_tbins//self.N_ewhbins
+    self.ewh_data = torch.zeros((self.Nr, self.Nc, self.N_ewhbins), dtype=torch.int32, device=self.device)
+    self.fast_sim = fast_sim
 
   def capture(self, phi_bar):
     r"""Method to generate SPC data for average incident photon flux (phi_bar) for 
@@ -174,19 +202,25 @@ class BaseEWHSPC(BaseDtofSPC):
         captured_data (dictionary): Dictionary containing EW histogram tensor
     """
     hist = 0
-    # NOTE: This step can be optimized by computing poisson process measurements for phi_bar*N_pulses instead of for loop
-    for cycles in tqdm(range(self.N_pulses)):
-      hist += self.sim_poisson_process(phi_bar) 
-    
-    factor = self.N_tbins//self.N_ewhbins
-    ewh_data = torch.zeros((self.Nr, self.Nc, self.N_ewhbins), dtype=torch.int32, device=self.device)
-    
-    # Iterating over each EWH bin and counting the total photon counts
-    for ewh_idx in range(self.N_ewhbins):
-      ewh_data[:,:,ewh_idx] = torch.sum(hist[:,:,ewh_idx*factor:(ewh_idx+1)*factor],-1,keepdims=False)
-    
+
+    if self.N_pulses>1 and not(self.fast_sim):
+      # NOTE: This step can be optimized by computing poisson process measurements for phi_bar*N_pulses instead of for loop
+      for cycles in tqdm(range(self.N_pulses)):
+        hist += self.sim_poisson_process(phi_bar) 
+    else:
+        hist = self.sim_poisson_process_multicycle(phi_bar*self.N_pulses)
+
+    if self.factor>1:  
+      self.ewh_data = self.ewh_data*0  
+      # Iterating over each EWH bin and counting the total photon counts
+      for ewh_idx in range(self.N_ewhbins):
+        self.ewh_data[:,:,ewh_idx] = torch.sum(hist[:,:,ewh_idx*self.factor:(ewh_idx+1)*self.factor],-1,keepdims=False)
+
+    else:
+      self.ewh_data = self.ewh_data*0  + hist
+      
     captured_data = {
-      "ewh": ewh_data
+      "ewh": self.ewh_data
     }
 
     return captured_data
