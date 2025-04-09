@@ -19,7 +19,7 @@ class BaseDtofSPC:
         device (str): Device `cpu` or `gpu`
         N_tbins (int): Number of time bins (frame)
     """
-    
+
     self.Nr = Nr
     self.Nc = Nc
     self.N_pulses = N_pulses
@@ -187,6 +187,7 @@ class BaseEWHSPC(BaseDtofSPC):
         fast_sim (int): Avoid simulating on a per cycle basis (default true)
     """
     self.N_ewhbins = N_ewhbins
+    assert self.N_tbins%self.N_ewhbins == 0, "N_tbins should be divisible by N_ewhbins"
     self.factor = self.N_tbins//self.N_ewhbins
     self.ewh_data = torch.zeros((self.Nr, self.Nc, self.N_ewhbins), dtype=torch.int32, device=self.device)
     self.fast_sim = fast_sim
@@ -204,18 +205,13 @@ class BaseEWHSPC(BaseDtofSPC):
     hist = 0
 
     if self.N_pulses>1 and not(self.fast_sim):
-      # NOTE: This step can be optimized by computing poisson process measurements for phi_bar*N_pulses instead of for loop
       for cycles in tqdm(range(self.N_pulses)):
         hist += self.sim_poisson_process(phi_bar) 
     else:
         hist = self.sim_poisson_process_multicycle(phi_bar*self.N_pulses)
 
-    if self.factor>1:  
-      self.ewh_data = self.ewh_data*0  
-      # Iterating over each EWH bin and counting the total photon counts
-      for ewh_idx in range(self.N_ewhbins):
-        self.ewh_data[:,:,ewh_idx] = torch.sum(hist[:,:,ewh_idx*self.factor:(ewh_idx+1)*self.factor],-1,keepdims=False)
-
+    if self.factor>1:
+      self.ewh_data = hist.view(self.Nr, self.Nc, self.N_ewhbins, self.factor).sum(dim=-1)  
     else:
       self.ewh_data = self.ewh_data*0  + hist
       
