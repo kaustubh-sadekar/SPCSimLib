@@ -77,6 +77,19 @@ This work was supported in part by NSF ECCS-2138471.
    :width: 200
 
 
+.. note:: To simulate more advanced active SPC measurements please refer to |visionsim_link_activespc|. |visionsim_link_index| is a modular and extensible framework that realistically emulates many different sensor types, alongside rich pixel-perfect ground truth annotations across low-, mid-, and high-level scene characteristics, as well as intrinsic and extrinsic camera properties. 
+
+
+.. |visionsim_link_activespc| raw:: html
+
+   <a href="https://visionsim.readthedocs.io/en/latest/sections/sensors/spcs/active_spc.html" target="_blank">VisionSIM documentation </a>
+
+
+.. |visionsim_link_index| raw:: html
+
+   <a href="https://visionsim.readthedocs.io/en/latest/index.html" target="_blank">VisionSIM</a>
+
+
 .. toctree::
    :maxdepth: 2
    :hidden:
@@ -106,6 +119,7 @@ This work was supported in part by NSF ECCS-2138471.
    :caption: Research Paper Implementations:
 
    ../notebooks/DeePEDH_ECCV24
+   ../notebooks/Simulate_SwisSPAD2
 
 
 .. toctree::
