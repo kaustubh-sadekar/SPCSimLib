@@ -59,7 +59,7 @@ cd SPCSimLib/
 conda create -n "spcsim_env" python=3.9.12
 conda activate spcsim_env
 pip install -r requirements.txt
-
+pip install -U pip setuptools
 ```
 
 2. Install SPCSim
