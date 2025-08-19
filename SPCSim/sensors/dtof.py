@@ -174,7 +174,7 @@ class BaseEWHSPC(BaseDtofSPC):
   incident in respective bin. In idea scenarios the bin with highest counts is most likely to contain the signal peak.
 
   """
-  def __init__(self,Nr, Nc, N_pulses, device, N_tbins, N_ewhbins, fast_sim = True, seed=0):
+  def __init__(self,Nr, Nc, N_pulses, device, N_tbins, N_ewhbins, fast_sim = False, seed=0):
     BaseDtofSPC.__init__(self,Nr, Nc, N_pulses, device, N_tbins, seed=seed)
     r"""
     Args:
@@ -184,7 +184,7 @@ class BaseEWHSPC(BaseDtofSPC):
         device (int): Device `cpu` or `gpu`
         N_tbins (int): Number of time bins (frame)
         N_ewhbins (int): Number of equi-width histogram bins.
-        fast_sim (int): Avoid simulating on a per cycle basis (default true)
+        fast_sim (int): Avoid simulating on a per cycle basis (default False)
     """
     self.N_ewhbins = N_ewhbins
     assert self.N_tbins%self.N_ewhbins == 0, "N_tbins should be divisible by N_ewhbins"
